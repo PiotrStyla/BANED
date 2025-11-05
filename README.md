@@ -5,7 +5,7 @@
 > **⚠️ DERIVATIVE WORK NOTICE**  
 > This is an educational/simplified implementation based on the original BANED research.  
 > **Original Repository:** https://github.com/PiotrStyla/BANED  
-> **Original Authors:** [To be specified from main repository]  
+> **Original Authors:** [YousIA Youcef Djenouri]  
 > **Original License:** [To be specified from main repository]  
 > 
 > Please cite the original BANED research if you use this code.
