@@ -37,6 +37,8 @@ fnn_all_clean.csv
 
 # Model outputs
 *.npy
+*.pth
+models/model.pthkl
 *.pkl
 
 # IDE
