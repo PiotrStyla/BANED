@@ -123,6 +123,8 @@ def main():
     parser.add_argument('--out_probs', default='fnn_all_clean_cnn_prob.npy', help='Output probabilities file')
     parser.add_argument('--epochs', type=int, default=5, help='Training epochs')
     parser.add_argument('--batch_size', type=int, default=8, help='Batch size')
+    parser.add_argument('--test_split', type=float, default=0.0, help='Test set ratio (0.0-0.5)')
+    parser.add_argument('--seed', type=int, default=42, help='Random seed')
     
     args = parser.parse_args()
     
@@ -150,14 +152,44 @@ def main():
     
     print(f"[INFO] Total samples: {len(all_texts)} (Real: {len(real_texts)}, Fake: {len(fake_texts)})")
     
-    # Build vocabulary
+    # Train/Test split if requested
+    if args.test_split > 0:
+        np.random.seed(args.seed)
+        indices = np.random.permutation(len(all_texts))
+        test_size = int(len(all_texts) * args.test_split)
+        test_indices = indices[:test_size]
+        train_indices = indices[test_size:]
+        
+        train_texts = [all_texts[i] for i in train_indices]
+        train_labels = [all_labels[i] for i in train_indices]
+        test_texts = [all_texts[i] for i in test_indices]
+        test_labels = [all_labels[i] for i in test_indices]
+        
+        print(f"[INFO] Train/Test split: {len(train_texts)}/{len(test_texts)} ({(1-args.test_split)*100:.0f}%/{args.test_split*100:.0f}%)")
+    else:
+        train_texts = all_texts
+        train_labels = all_labels
+        test_texts = all_texts
+        test_labels = all_labels
+        print(f"[INFO] No train/test split - using all data for both")
+    
+    # Build vocabulary from training data only
     print("[INFO] Building vocabulary...")
-    vocab = build_vocab(all_texts)
+    vocab = build_vocab(train_texts)
     print(f"[INFO] Vocabulary size: {len(vocab)}")
     
-    # Create dataset
-    dataset = TextDataset(all_texts, all_labels, vocab)
-    dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
+    # Create datasets
+    train_dataset = TextDataset(train_texts, train_labels, vocab)
+    train_dataloader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True)
+    
+    # Full dataset for final predictions (in original order)
+    full_dataset = TextDataset(all_texts, all_labels, vocab)
+    full_dataloader = DataLoader(full_dataset, batch_size=args.batch_size, shuffle=False)
+    
+    # Test dataset
+    if args.test_split > 0:
+        test_dataset = TextDataset(test_texts, test_labels, vocab)
+        test_dataloader_eval = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False)
     
     # Model
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -175,7 +207,7 @@ def main():
         correct = 0
         total = 0
         
-        for inputs, labels in dataloader:
+        for inputs, labels in train_dataloader:
             inputs, labels = inputs.to(device), labels.to(device)
             
             optimizer.zero_grad()
@@ -189,19 +221,43 @@ def main():
             correct += (predictions == labels).sum().item()
             total += labels.size(0)
         
-        accuracy = correct / total
-        print(f"  Epoch {epoch+1}/{args.epochs} - Loss: {total_loss:.4f}, Accuracy: {accuracy:.4f}")
+        train_accuracy = correct / total
+        
+        # Evaluate on test set if available
+        if args.test_split > 0:
+            model.eval()
+            test_correct = 0
+            test_total = 0
+            with torch.no_grad():
+                for inputs, labels in test_dataloader_eval:
+                    inputs, labels = inputs.to(device), labels.to(device)
+                    outputs = model(inputs)
+                    predictions = (outputs > 0.5).float()
+                    test_correct += (predictions == labels).sum().item()
+                    test_total += labels.size(0)
+            test_accuracy = test_correct / test_total
+            print(f"  Epoch {epoch+1}/{args.epochs} - Loss: {total_loss:.4f}, Train Acc: {train_accuracy:.4f}, Test Acc: {test_accuracy:.4f}")
+        else:
+            print(f"  Epoch {epoch+1}/{args.epochs} - Loss: {total_loss:.4f}, Accuracy: {train_accuracy:.4f}")
     
-    # MC Dropout inference
+    # MC Dropout inference on full dataset (in original order)
     print(f"[INFO] Running MC Dropout inference ({args.mc_samples} samples)...")
-    test_dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=False)
-    predictions = mc_dropout_predict(model, test_dataloader, args.mc_samples, device)
+    predictions = mc_dropout_predict(model, full_dataloader, args.mc_samples, device)
     
     # Save predictions
     np.save(args.out_probs, predictions)
     print(f"[INFO] Saved predictions to: {args.out_probs}")
     print(f"[INFO] Predictions shape: {predictions.shape}")
     print(f"[INFO] Sample predictions (first 5): {predictions[:5]}")
+    
+    # Final accuracy report
+    if args.test_split > 0:
+        print(f"\n[INFO] Final Test Set Performance:")
+        test_preds_mc = mc_dropout_predict(model, test_dataloader_eval, args.mc_samples, device)
+        test_preds_binary = (test_preds_mc > 0.5).astype(int)
+        test_labels_array = np.array(test_labels)
+        test_acc_final = np.mean(test_preds_binary == test_labels_array)
+        print(f"  Test Accuracy (MC Dropout): {test_acc_final:.4f} ({int(test_acc_final*len(test_labels))}/{len(test_labels)})")
 
 
 if __name__ == '__main__':
