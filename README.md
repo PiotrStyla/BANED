@@ -2,11 +2,19 @@
 
 **Bayesian-Augmented News Evaluation and Detection**
 
+> **⚠️ DERIVATIVE WORK NOTICE**  
+> This is an educational/simplified implementation based on the original BANED research.  
+> **Original Repository:** https://github.com/PiotrStyla/BANED  
+> **Original Authors:** [To be specified from main repository]  
+> **Original License:** [To be specified from main repository]  
+> 
+> Please cite the original BANED research if you use this code.
+
 A simplified, production-ready implementation combining CNN with MC Dropout and Apriori-based Knowledge Base for fake news detection. Features automated dataset generation, train/test validation, and optimized fusion algorithms.
 
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-red)](https://pytorch.org/)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![License](https://img.shields.io/badge/license-See%20Original-green)](https://github.com/PiotrStyla/BANED)
 
 ## 🚀 Quick Start
 
@@ -417,32 +425,56 @@ python cnn.py --seed 42
 
 ## 🤝 Contributing
 
-This is a minimal standalone implementation of BANED for research and education. 
+**IMPORTANT: This is a derivative work / educational implementation.**
 
-**Original Research:** [BANED Main Repository](https://github.com/PiotrStyla/BANED)
+### Original Work
+- **Original BANED Research:** [Main Repository](https://github.com/PiotrStyla/BANED)
+- **Original Authors:** [Please specify original authors from the main repository]
+- **Original License:** [Please specify license from the main repository]
 
-**This Fork Changes:**
+This minimal standalone implementation was created for educational and research purposes, building upon the original BANED work.
+
+### Changes in This Implementation
 - ✅ Automated dataset generation (1K+ examples)
 - ✅ Train/test split validation
 - ✅ Optimized fusion algorithm
 - ✅ Comprehensive analysis tools
 - ✅ Production-ready scripts
 
+### Contributing to This Fork
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
 ## 📄 License
 
-See original repository for license information.
+**This derivative work maintains the same license as the original BANED repository.**
+
+Please refer to the [original repository](https://github.com/PiotrStyla/BANED) for complete license information.
+
+If you use this code, you must also comply with the original BANED license terms.
 
 ## 📚 Citation
 
-If you use this code in your research, please cite:
+**If you use this code, you MUST cite the original BANED research:**
+
+```bibtex
+@article{original_baned,
+  author = {[Original BANED authors - please check main repository]},
+  title = {BANED: Bayesian-Augmented News Evaluation and Detection},
+  year = {[Original publication year]},
+  url = {https://github.com/PiotrStyla/BANED}
+}
+```
+
+**Optionally, you may also cite this minimal implementation:**
 
 ```bibtex
 @software{baned_minimal_2025,
-  author = {Styla, Piotr},
-  title = {BANED: Minimal Standalone Implementation},
+  author = {[Your name/team]},
+  title = {BANED: Minimal Standalone Implementation (Derivative Work)},
   year = {2025},
   url = {https://github.com/PiotrStyla/BANED},
-  branch = {minimal-standalone}
+  branch = {minimal-standalone},
+  note = {Educational implementation based on original BANED research}
 }
 ```
 
@@ -453,9 +485,19 @@ If you use this code in your research, please cite:
 
 ## 🎓 Acknowledgments
 
-- Original BANED research and implementation
+### Primary Acknowledgment
+**This work is based on the original BANED (Bayesian-Augmented News Evaluation and Detection) research.**
+
+- **Original BANED Repository:** https://github.com/PiotrStyla/BANED
+- **Original Authors:** [Please specify from main repository]
+- **Original Research Paper:** [Please specify if published]
+
+This minimal implementation is a derivative educational work that simplifies and extends the original BANED for teaching and experimentation purposes.
+
+### Additional Acknowledgments
 - FakeNewsNet dataset inspiration
 - PyTorch and scikit-learn communities
+- Open source ML/NLP community
 
 ---
 
