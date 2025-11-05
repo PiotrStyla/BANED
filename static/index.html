@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BANED - Fake News Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            display: none;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .result.real {
+            background: #d4edda;
+            border: 2px solid #28a745;
+        }
+        
+        .result.fake {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+        }
+        
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .result-icon {
+            font-size: 2.5em;
+        }
+        
+        .result-title {
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+        
+        .result-real .result-title {
+            color: #28a745;
+        }
+        
+        .result-fake .result-title {
+            color: #dc3545;
+        }
+        
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .detail-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        
+        .detail-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .confidence-bar {
+            width: 100%;
+            height: 25px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        .patterns {
+            margin-top: 15px;
+        }
+        
+        .pattern-group {
+            margin-bottom: 10px;
+        }
+        
+        .pattern-label {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .pattern-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .pattern-tag {
+            background: #f0f0f0;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        
+        .pattern-tag.real {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .pattern-tag.fake {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .example-btn {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        
+        .example-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .example-title {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+        
+        .example-text {
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .api-status {
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .api-status.online {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .api-status.offline {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 BANED</h1>
+            <p>Bayesian-Augmented News Evaluation and Detection</p>
+        </div>
+        
+        <div id="apiStatus" class="api-status">Checking API...</div>
+        
+        <div class="card">
+            <h2>Analyze News Article</h2>
+            <p style="color: #666; margin-bottom: 20px;">Paste a news headline or article below to check if it's real or fake.</p>
+            
+            <div class="input-group">
+                <label for="newsText">News Text:</label>
+                <textarea 
+                    id="newsText" 
+                    placeholder="Enter news headline or article here...&#10;&#10;Example: 'Scientists discover new species of dinosaur in Montana fossil site'"></textarea>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="useFusion" checked>
+                <label for="useFusion">Use Knowledge Base Fusion (More Accurate)</label>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn-primary" onclick="analyzeNews()">
+                    🔍 Analyze
+                </button>
+                <button class="btn-secondary" onclick="clearAll()">
+                    ✖️ Clear
+                </button>
+            </div>
+            
+            <div class="loading">
+                <div class="spinner"></div>
+                <div>Analyzing...</div>
+            </div>
+            
+            <div id="result" class="result"></div>
+        </div>
+        
+        <div class="card">
+            <h2>Try Examples</h2>
+            <div class="examples">
+                <div class="example-btn" onclick="loadExample(0)">
+                    <div class="example-title">✅ Real News</div>
+                    <div class="example-text">Department of Health announces new vaccination program...</div>
+                </div>
+                <div class="example-btn" onclick="loadExample(1)">
+                    <div class="example-title">❌ Fake News</div>
+                    <div class="example-text">Scientists discover miracle cure that doctors don't want you to know...</div>
+                </div>
+                <div class="example-btn" onclick="loadExample(2)">
+                    <div class="example-title">🤔 Clickbait</div>
+                    <div class="example-text">You won't believe what this study reveals about coffee...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:8000';
+        
+        const examples = [
+            "Department of Health announces new vaccination program for children",
+            "Scientists discover miracle cure for cancer by eating this one weird fruit",
+            "You won't believe what this study reveals about coffee and your brain"
+        ];
+        
+        // Check API status on load
+        window.addEventListener('load', checkApiStatus);
+        
+        async function checkApiStatus() {
+            try {
+                const response = await fetch(`${API_URL}/`);
+                const data = await response.json();
+                
+                const statusDiv = document.getElementById('apiStatus');
+                if (data.status === 'online' && data.model_loaded) {
+                    statusDiv.className = 'api-status online';
+                    statusDiv.textContent = `✅ API Online - Model Loaded (v${data.version})`;
+                } else {
+                    statusDiv.className = 'api-status offline';
+                    statusDiv.textContent = '⚠️ API Online but Model Not Loaded';
+                }
+            } catch (error) {
+                const statusDiv = document.getElementById('apiStatus');
+                statusDiv.className = 'api-status offline';
+                statusDiv.textContent = '❌ API Offline - Please start the server';
+            }
+        }
+        
+        function loadExample(index) {
+            document.getElementById('newsText').value = examples[index];
+        }
+        
+        function clearAll() {
+            document.getElementById('newsText').value = '';
+            document.getElementById('result').style.display = 'none';
+        }
+        
+        async function analyzeNews() {
+            const text = document.getElementById('newsText').value.trim();
+            const useFusion = document.getElementById('useFusion').checked;
+            
+            if (!text) {
+                alert('Please enter some text to analyze');
+                return;
+            }
+            
+            // Show loading
+            document.querySelector('.loading').classList.add('show');
+            document.getElementById('result').style.display = 'none';
+            
+            try {
+                const response = await fetch(`${API_URL}/predict`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        use_fusion: useFusion
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+                
+                const data = await response.json();
+                displayResult(data);
+            } catch (error) {
+                alert('Error: ' + error.message + '\n\nMake sure the API server is running:\npython api.py');
+            } finally {
+                document.querySelector('.loading').classList.remove('show');
+            }
+        }
+        
+        function displayResult(data) {
+            const resultDiv = document.getElementById('result');
+            const isReal = data.prediction === 'REAL';
+            
+            resultDiv.className = `result ${isReal ? 'real' : 'fake'}`;
+            
+            const confidencePercent = Math.round(data.confidence * 100);
+            const icon = isReal ? '✅' : '❌';
+            
+            let patternsHtml = '';
+            if (data.kb_match) {
+                patternsHtml = `
+                    <div class="patterns">
+                        ${data.kb_match.real.length > 0 ? `
+                            <div class="pattern-group">
+                                <div class="pattern-label">Real News Patterns Detected:</div>
+                                <div class="pattern-tags">
+                                    ${data.kb_match.real.map(p => `<span class="pattern-tag real">${p}</span>`).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        ${data.kb_match.fake.length > 0 ? `
+                            <div class="pattern-group">
+                                <div class="pattern-label">Fake News Patterns Detected:</div>
+                                <div class="pattern-tags">
+                                    ${data.kb_match.fake.map(p => `<span class="pattern-tag fake">${p}</span>`).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        ${data.kb_match.real.length === 0 && data.kb_match.fake.length === 0 ? 
+                            '<div style="color: #666; font-style: italic;">No KB patterns matched</div>' : ''}
+                    </div>
+                `;
+            }
+            
+            resultDiv.innerHTML = `
+                <div class="result-header">
+                    <div class="result-icon">${icon}</div>
+                    <div class="result-title">${data.prediction} NEWS</div>
+                </div>
+                
+                <div class="result-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Confidence</div>
+                        <div class="detail-value">${confidencePercent}%</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: ${confidencePercent}%">
+                                ${confidencePercent}%
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">CNN Probability</div>
+                        <div class="detail-value">${(data.cnn_probability * 100).toFixed(1)}%</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Method</div>
+                        <div class="detail-value">${data.method === 'fusion' ? 'CNN + KB Fusion' : 'CNN Only'}</div>
+                    </div>
+                </div>
+                
+                ${patternsHtml}
+            `;
+            
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

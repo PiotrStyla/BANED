@@ -7,6 +7,7 @@ import argparse
 import csv
 import numpy as np
 import sys
+import os
 
 try:
     import torch
@@ -258,6 +259,19 @@ def main():
         test_labels_array = np.array(test_labels)
         test_acc_final = np.mean(test_preds_binary == test_labels_array)
         print(f"  Test Accuracy (MC Dropout): {test_acc_final:.4f} ({int(test_acc_final*len(test_labels))}/{len(test_labels)})")
+    
+    # Save model for deployment
+    print(f"\n[INFO] Saving model for deployment...")
+    os.makedirs('models', exist_ok=True)
+    torch.save(model.state_dict(), 'models/model.pth')
+    print(f"[INFO] Model saved to: models/model.pth")
+    
+    # Save vocabulary
+    with open('models/vocab.txt', 'w', encoding='utf-8') as f:
+        for word in sorted(vocab.keys(), key=lambda w: vocab[w]):
+            f.write(f"{word}\n")
+    print(f"[INFO] Vocabulary saved to: models/vocab.txt ({len(vocab)} words)")
+    print(f"[INFO] Model ready for API deployment!")
 
 
 if __name__ == '__main__':

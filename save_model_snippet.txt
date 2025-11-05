@@ -1,0 +1,13 @@
+
+# Add this to your cnn.py training script:
+
+# After training completes, add:
+print("[INFO] Saving model for deployment...")
+torch.save(model.state_dict(), 'models/model.pth')
+print("[INFO] Model saved to models/model.pth")
+
+# Save vocabulary
+with open('models/vocab.txt', 'w', encoding='utf-8') as f:
+    for word in sorted(vocab.keys(), key=lambda w: vocab[w]):
+        f.write(f"{word}\n")
+print("[INFO] Vocabulary saved to models/vocab.txt")
