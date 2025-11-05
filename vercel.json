@@ -4,13 +4,13 @@
     {
       "src": "api.py",
       "use": "@vercel/python"
-    },
-    {
-      "src": "docs/**",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/api",
+      "dest": "api.py"
+    },
     {
       "src": "/api/(.*)",
       "dest": "api.py"
@@ -19,8 +19,5 @@
       "src": "/(.*)",
       "dest": "docs/$1"
     }
-  ],
-  "env": {
-    "PYTHON_VERSION": "3.11"
-  }
+  ]
 }
