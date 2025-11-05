@@ -37,9 +37,17 @@ fnn_all_clean.csv
 
 # Model outputs
 *.npy
-*.pth
-models/model.pthkl
 *.pkl
+
+# Model weights (too large for git)
+models/model.pth
+
+# Keep vocabulary files (small, important)
+!models/vocab*.txt
+!models/README.md
+
+# Keep backup models (optional - comment out if too large)
+!models/model_10k_easy_best.pth
 
 # IDE
 .vscode/

@@ -58,9 +58,9 @@ class SimpleCNN(nn.Module):
     def __init__(self, vocab_size, embed_dim=64, num_filters=100, dropout_p=0.5):
         super().__init__()
         self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
-        self.conv3 = nn.Conv1d(embed_dim, num_filters, kernel_size=3, padding=1)
-        self.conv4 = nn.Conv1d(embed_dim, num_filters, kernel_size=4, padding=2)
-        self.conv5 = nn.Conv1d(embed_dim, num_filters, kernel_size=5, padding=2)
+        self.conv1 = nn.Conv1d(embed_dim, num_filters, kernel_size=3, padding=1)
+        self.conv2 = nn.Conv1d(embed_dim, num_filters, kernel_size=4, padding=2)
+        self.conv3 = nn.Conv1d(embed_dim, num_filters, kernel_size=5, padding=2)
         self.dropout = nn.Dropout(dropout_p)
         self.fc = nn.Linear(num_filters * 3, 1)
         self.sigmoid = nn.Sigmoid()
@@ -68,16 +68,20 @@ class SimpleCNN(nn.Module):
     def forward(self, x):
         x = self.embedding(x)
         x = x.transpose(1, 2)
+        c1 = torch.relu(self.conv1(x))
+        c2 = torch.relu(self.conv2(x))
         c3 = torch.relu(self.conv3(x))
-        c4 = torch.relu(self.conv4(x))
-        c5 = torch.relu(self.conv5(x))
+        c1 = torch.max(c1, dim=2)[0]
+        c2 = torch.max(c2, dim=2)[0]
         c3 = torch.max(c3, dim=2)[0]
-        c4 = torch.max(c4, dim=2)[0]
-        c5 = torch.max(c5, dim=2)[0]
-        concat = torch.cat([c3, c4, c5], dim=1)
+        concat = torch.cat([c1, c2, c3], dim=1)
         concat = self.dropout(concat)
         out = self.fc(concat)
         return self.sigmoid(out).squeeze()
+    
+    def predict(self, x):
+        """Prediction mode - returns probabilities"""
+        return self.forward(x)
 
 # Global state
 model = None
