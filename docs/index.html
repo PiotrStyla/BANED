@@ -407,15 +407,27 @@ Example: 'Department of Health announces new vaccination program for children'"
                 <div class="example-buttons">
                     <div class="example-btn" onclick="loadExample(0)">
                         <div class="example-title">✅ Real News</div>
-                        <div class="example-text">Department announces new vaccination program...</div>
+                        <div class="example-text">Department announces vaccination program...</div>
                     </div>
                     <div class="example-btn" onclick="loadExample(1)">
                         <div class="example-title">❌ Fake News</div>
-                        <div class="example-text">Scientists discover miracle cure...</div>
+                        <div class="example-text">SHOCKING! Miracle cure doctors HATE...</div>
                     </div>
                     <div class="example-btn" onclick="loadExample(2)">
                         <div class="example-title">🤔 Clickbait</div>
-                        <div class="example-text">You won't believe what this study reveals about coffee...</div>
+                        <div class="example-text">You won't believe... number 7 will shock you!</div>
+                    </div>
+                    <div class="example-btn" onclick="loadExample(3)">
+                        <div class="example-title">📚 Academic</div>
+                        <div class="example-text">University researchers published peer-reviewed findings...</div>
+                    </div>
+                    <div class="example-btn" onclick="loadExample(4)">
+                        <div class="example-title">🕵️ Conspiracy</div>
+                        <div class="example-text">Government cover-up EXPOSED! Secret about big pharma...</div>
+                    </div>
+                    <div class="example-btn" onclick="loadExample(5)">
+                        <div class="example-title">🏛️ Official</div>
+                        <div class="example-text">Ministry spokesperson confirmed new policy...</div>
                     </div>
                 </div>
             </div>
@@ -435,9 +447,12 @@ Example: 'Department of Health announces new vaccination program for children'"
         const API_URL = 'https://baned-xi.vercel.app/api';
         
         const examples = [
-            "Department of Health announces new vaccination program for children",
-            "Scientists discover miracle cure for cancer by eating this one weird fruit",
-            "You won't believe what this study reveals about coffee and your brain"
+            "Department of Health announces new vaccination program for children according to official sources",
+            "SHOCKING! Scientists discover miracle cure for cancer by eating this one weird fruit that doctors HATE!",
+            "You won't believe what this study reveals about coffee and your brain - number 7 will shock you!",
+            "University researchers published peer-reviewed findings in medical journal about treatment effectiveness",
+            "BREAKING: Government cover-up EXPOSED! They don't want you to know this secret about big pharma!",
+            "According to the spokesperson, the ministry confirmed new policy implementation based on expert analysis"
         ];
         
         // Check API status on load
