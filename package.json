@@ -7,9 +7,7 @@
     "@vercel/node": "^3.0.0"
   },
   "scripts": {
-    "dev": "vercel dev",
-    "build": "vercel build",
-    "deploy": "vercel --prod"
+    "start": "node api/predict.js"
   },
   "keywords": ["fake-news", "api", "vercel", "serverless"],
   "author": "BANED Team",
