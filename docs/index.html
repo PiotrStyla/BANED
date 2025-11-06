@@ -359,6 +359,109 @@
         .footer a:hover {
             text-decoration: underline;
         }
+        
+        /* Cookie Banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            padding: 15px 20px;
+            z-index: 1000;
+            border-top: 2px solid #667eea;
+            display: none;
+        }
+        
+        .cookie-banner.show {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        
+        .cookie-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .cookie-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .cookie-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .cookie-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .cookie-btn.accept {
+            background: #667eea;
+            color: white;
+        }
+        
+        .cookie-btn.accept:hover {
+            background: #5a6fd8;
+        }
+        
+        .cookie-btn.decline {
+            background: transparent;
+            color: white;
+            border: 1px solid #666;
+        }
+        
+        .cookie-btn.decline:hover {
+            background: #333;
+        }
+        
+        /* Legal Links */
+        .legal-links {
+            margin-top: 15px;
+            font-size: 0.75em;
+            opacity: 0.6;
+            text-align: center;
+        }
+        
+        .legal-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        .legal-links a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cookie-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .cookie-buttons {
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -450,6 +553,28 @@ Example: 'Department of Health announces new vaccination program for children'"
                     <sup>a</sup>IDEAS NCBR Sp. z o.o.
                 </p>
             </div>
+            
+            <div class="legal-links">
+                <a href="#" onclick="showPrivacyPolicy()">Privacy Policy</a> |
+                <a href="#" onclick="showCookiePolicy()">Cookie Policy</a> |
+                <a href="#" onclick="showTerms()">Terms of Service</a> |
+                <a href="#" onclick="showContact()">Contact</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Cookie Banner -->
+    <div id="cookieBanner" class="cookie-banner">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <strong>🍪 We use cookies</strong><br>
+                This website uses essential cookies for functionality and analytics cookies to improve your experience. 
+                No personal data is collected or shared with third parties.
+            </div>
+            <div class="cookie-buttons">
+                <button class="cookie-btn accept" onclick="acceptCookies()">Accept All</button>
+                <button class="cookie-btn decline" onclick="declineCookies()">Essential Only</button>
+            </div>
         </div>
     </div>
     
@@ -473,7 +598,10 @@ Example: 'Department of Health announces new vaccination program for children'"
         ];
         
         // Check API status on load
-        window.addEventListener('load', checkApiStatus);
+        window.addEventListener('load', function() {
+            checkApiStatus();
+            showCookieBanner();
+        });
         
         async function checkApiStatus() {
             try {
@@ -609,6 +737,151 @@ Example: 'Department of Health announces new vaccination program for children'"
             
             resultDiv.style.display = 'block';
             resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        // Cookie Management
+        function showCookieBanner() {
+            const consent = localStorage.getItem('cookieConsent');
+            if (!consent) {
+                document.getElementById('cookieBanner').classList.add('show');
+            }
+        }
+        
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            localStorage.setItem('analyticsEnabled', 'true');
+            document.getElementById('cookieBanner').classList.remove('show');
+            
+            // Initialize analytics if needed
+            console.log('Analytics cookies accepted');
+        }
+        
+        function declineCookies() {
+            localStorage.setItem('cookieConsent', 'essential');
+            localStorage.setItem('analyticsEnabled', 'false');
+            document.getElementById('cookieBanner').classList.remove('show');
+            
+            console.log('Only essential cookies accepted');
+        }
+        
+        // Legal Pages
+        function showPrivacyPolicy() {
+            alert(`PRIVACY POLICY
+
+BANED - Fake News Detection System
+
+Data Collection:
+• We do not collect personal information
+• News text you analyze is processed temporarily and not stored
+• Essential cookies for website functionality
+• Optional analytics cookies (with your consent)
+
+Data Processing:
+• Text analysis happens in real-time
+• No data is permanently stored on our servers
+• TensorFlow.js model runs locally in your browser
+
+Third Parties:
+• Vercel (hosting) - see their privacy policy
+• No data sharing with advertisers or marketers
+
+Your Rights:
+• You can disable cookies in your browser
+• Contact us for any privacy concerns
+
+Contact: GitHub repository for questions
+
+Last updated: November 2024`);
+        }
+        
+        function showCookiePolicy() {
+            alert(`COOKIE POLICY
+
+Types of Cookies:
+1. Essential Cookies (Always Active)
+   • Website functionality
+   • User preferences
+   • Security features
+
+2. Analytics Cookies (Optional)
+   • Usage statistics
+   • Performance monitoring
+   • No personal identification
+
+Cookie Management:
+• You can change preferences anytime
+• Browser settings to disable cookies
+• Essential cookies cannot be disabled
+
+Data Retention:
+• Session cookies: Deleted when browser closes
+• Persistent cookies: Up to 1 year
+• Analytics data: Anonymized
+
+Contact us through GitHub for cookie questions.`);
+        }
+        
+        function showTerms() {
+            alert(`TERMS OF SERVICE
+
+BANED - AI-Powered Fake News Detection
+
+Service Description:
+• Educational and research tool
+• AI-powered text analysis
+• No guarantee of 100% accuracy
+
+User Responsibilities:
+• Use for legitimate purposes only
+• Do not rely solely on AI predictions
+• Verify information through multiple sources
+
+Limitations:
+• Service provided "as is"
+• No warranty of availability
+• Results are AI predictions, not facts
+
+Prohibited Uses:
+• Malicious content analysis
+• Automated bulk processing
+• Commercial use without permission
+
+Intellectual Property:
+• Based on academic research
+• Open source components
+• Respect third-party rights
+
+Contact: GitHub repository for support
+
+Effective: November 2024`);
+        }
+        
+        function showContact() {
+            alert(`CONTACT INFORMATION
+
+BANED - Fake News Detection System
+
+Technical Support:
+• GitHub: https://github.com/PiotrStyla/BANED
+• Issues: Report bugs via GitHub Issues
+• Documentation: README.md
+
+Academic Inquiries:
+• Based on research by IDEAS NCBR Sp. z o.o.
+• Paper: "Knowledge-Driven Bayesian Uncertainty Quantification for Reliable Fake News Detection"
+• Authors: Julia Puczynska, Youcef Djenouri, Michał Bizon, Tomasz Michalak, Piotr Sankowski
+
+General Questions:
+• Use GitHub Discussions
+• Check documentation first
+• Be specific about issues
+
+Response Time:
+• Best effort support
+• No guaranteed response time
+• Community-driven project
+
+Version: 5.0.1-tensorflow`);
         }
     </script>
 </body>
