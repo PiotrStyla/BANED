@@ -4,6 +4,10 @@
     {
       "src": "api/predict.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "docs/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -16,8 +20,12 @@
       "dest": "/api/predict.js"
     },
     {
+      "src": "/",
+      "dest": "/docs/index.html"
+    },
+    {
       "src": "/(.*)",
-      "dest": "docs/$1"
+      "dest": "/docs/$1"
     }
   ]
 }
