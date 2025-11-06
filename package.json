@@ -1,0 +1,17 @@
+{
+  "name": "baned-api",
+  "version": "1.0.0",
+  "description": "BANED Fake News Detection API - Vercel Serverless",
+  "main": "api/predict.js",
+  "dependencies": {
+    "@vercel/node": "^3.0.0"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "vercel build",
+    "deploy": "vercel --prod"
+  },
+  "keywords": ["fake-news", "api", "vercel", "serverless"],
+  "author": "BANED Team",
+  "license": "MIT"
+}

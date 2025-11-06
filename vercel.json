@@ -1,19 +1,18 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api.py",
-      "use": "@vercel/python"
+  "functions": {
+    "api/predict.js": {
+      "runtime": "nodejs18.x"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/api",
-      "dest": "api.py"
+      "dest": "/api/predict.js"
     },
     {
       "src": "/api/(.*)",
-      "dest": "api.py"
+      "dest": "/api/predict.js"
     },
     {
       "src": "/(.*)",
