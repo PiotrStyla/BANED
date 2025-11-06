@@ -3,12 +3,17 @@
 **Bayesian-Augmented News Evaluation and Detection**
 
 > **⚠️ DERIVATIVE WORK NOTICE**  
-> This is an educational/simplified implementation based on the original BANED research.  
-> **Original Repository:** https://github.com/PiotrStyla/BANED  
-> **Original Authors:** [YousIA Youcef Djenouri]  
-> **Original License:** [To be specified from main repository]  
-> 
-> Please cite the original BANED research if you use this code.
+> This is an educational/humanitarian implementation based on the original BANED research.  
+> **Original Repository:** https://github.com/micbizon/BANED  
+> **Original Authors:** Julia Puczynska, Youcef Djenouri, Michał Bizon, Tomasz Michalak, Piotr Sankowski  
+> **Original Institution:** IDEAS NCBR Sp. z o.o.  
+> **License:** MIT (see LICENSE file)  
+>   
+> **This Implementation:** Created for humanitarian purposes by Fundacja Hospicjum  
+> **Purpose:** Free, open-source fake news detection tool  
+> **Status:** Completely free to use - Optional donations support hospice care  
+>   
+> **Citation Required:** If you use this code, you MUST cite the original BANED research.
 
 A simplified, production-ready implementation combining CNN with MC Dropout and Apriori-based Knowledge Base for fake news detection. Features automated dataset generation, train/test validation, and optimized fusion algorithms.
 
