@@ -1,6 +1,5 @@
-const { createHandler } = require('@vercel/node');
-const fs = require('fs');
-const path = require('path');
+// Vercel Serverless Function
+// No imports needed - Vercel handles everything
 
 // Load model and vocabulary (simplified for Vercel)
 const loadModel = async () => {
@@ -62,7 +61,7 @@ const predictFakeNews = (text, useFusion = true) => {
   };
 };
 
-module.exports = createHandler(async (req, res) => {
+module.exports = async (req, res) => {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
