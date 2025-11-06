@@ -665,9 +665,9 @@ Example: 'Department of Health announces new vaccination program for children'"
                 const statusElement = document.getElementById('apiStatus');
                 
                 if (data.model_loaded && data.kb_loaded) {
-                    const mlEngine = data.ml_engine || 'Unknown';
-                    const version = data.version || '5.0.0';
-                    statusElement.innerHTML = `✅ ${mlEngine} Model Online (v${version})`;
+                    const version = data.version || '7.0.0';
+                    const languages = data.languages ? data.languages.join(' + ') : 'English';
+                    statusElement.innerHTML = `✅ Dual-Model Online (v${version}) - ${languages}`;
                     statusElement.className = 'api-status online';
                 } else {
                     statusElement.innerHTML = '🧠 TensorFlow.js Model Training...';
@@ -753,6 +753,13 @@ Example: 'Department of Health announces new vaccination program for children'"
                 }
             }
             
+            // Language and model info
+            const language = data.language || 'en';
+            const languageEmoji = language === 'pl' ? '🇵🇱' : '🇬🇧';
+            const languageName = language === 'pl' ? 'Polish' : 'English';
+            const modelInfo = data.model_info || {};
+            const isBestModel = modelInfo.performance && modelInfo.performance.includes('BEST');
+            
             resultDiv.className = `result ${isReal ? 'real' : 'fake'}`;
             resultDiv.innerHTML = `
                 <div class="result-header">
@@ -761,6 +768,11 @@ Example: 'Department of Health announces new vaccination program for children'"
                 </div>
                 
                 <div class="result-details">
+                    <div class="detail-item">
+                        <div class="detail-label">${languageEmoji} Detected Language ${isBestModel ? '🏆' : ''}</div>
+                        <div class="detail-value">${languageName} ${isBestModel ? '(BEST MODEL)' : ''}</div>
+                    </div>
+                    
                     <div class="detail-item">
                         <div class="detail-label">Overall Confidence</div>
                         <div class="detail-value">${(data.confidence * 100).toFixed(1)}%</div>
@@ -771,15 +783,26 @@ Example: 'Department of Health announces new vaccination program for children'"
                         </div>
                     </div>
                     
+                    ${modelInfo.dataset ? `
                     <div class="detail-item">
-                        <div class="detail-label">CNN Probability</div>
-                        <div class="detail-value">${(data.cnn_probability * 100).toFixed(1)}%</div>
-                        <div class="confidence-bar">
-                            <div class="confidence-fill" style="width: ${data.cnn_probability * 100}%">
-                                ${(data.cnn_probability * 100).toFixed(0)}%
-                            </div>
-                        </div>
+                        <div class="detail-label">Model Dataset</div>
+                        <div class="detail-value">${modelInfo.dataset}</div>
                     </div>
+                    ` : ''}
+                    
+                    ${modelInfo.final_loss ? `
+                    <div class="detail-item">
+                        <div class="detail-label">Model Loss</div>
+                        <div class="detail-value">${modelInfo.final_loss} ${isBestModel ? '(Best!)' : ''}</div>
+                    </div>
+                    ` : ''}
+                    
+                    ${data.scores ? `
+                    <div class="detail-item">
+                        <div class="detail-label">Pattern Scores</div>
+                        <div class="detail-value">Real: ${data.scores.real} | Fake: ${data.scores.fake}</div>
+                    </div>
+                    ` : ''}
                     
                     <div class="detail-item">
                         <div class="detail-label">Detection Method</div>
