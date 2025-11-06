@@ -18,49 +18,89 @@ const loadModel = async () => {
 };
 
 const predictFakeNews = (text, useFusion = true) => {
-  // Enhanced rule-based prediction with more patterns
+  // Multi-language enhanced prediction (English + Polish)
   const fakeIndicators = [
-    // Sensational language
+    // English - Sensational language
     'miracle', 'cure', 'you won\'t believe', 'shocking', 'secret', 'amazing',
     'incredible', 'unbelievable', 'stunning', 'mind-blowing', 'explosive',
     
-    // Conspiracy terms
+    // English - Conspiracy terms
     'conspiracy', 'cover-up', 'hidden truth', 'they don\'t want you to know',
     'exposed', 'revealed', 'leaked', 'insider', 'whistleblower',
     
-    // Medical misinformation
+    // English - Medical misinformation
     'doctors hate', 'big pharma', 'natural remedy', 'one weird trick',
     'pharmaceutical companies', 'suppressed', 'banned',
     
-    // Clickbait patterns
+    // English - Clickbait patterns
     'this will change everything', 'what happened next', 'number 7 will shock you',
     'you\'ll never guess', 'wait until you see', 'gone wrong', 'gone viral',
     
-    // Emotional manipulation
+    // English - Emotional manipulation
     'terrifying', 'devastating', 'outrageous', 'disgusting', 'horrifying',
-    'breaking news', 'urgent', 'emergency', 'crisis', 'disaster'
+    'breaking news', 'urgent', 'emergency', 'crisis', 'disaster',
+    
+    // POLISH - Sensacyjne słownictwo
+    'cud', 'cudowny', 'nie uwierzysz', 'szokujące', 'sekret', 'niesamowite',
+    'niewiarygodne', 'oszałamiające', 'rewelacyjne', 'eksplozywne',
+    
+    // POLISH - Teorie spiskowe
+    'spisek', 'ukrywają', 'ukryta prawda', 'nie chcą żebyś wiedział',
+    'ujawnione', 'wyciekło', 'informator', 'demaskuje',
+    
+    // POLISH - Medyczna dezinformacja
+    'lekarze nienawidzą', 'koncerny farmaceutyczne', 'naturalny sposób',
+    'jeden prosty trik', 'przemysł farmaceutyczny', 'zatajane', 'zakazane',
+    
+    // POLISH - Clickbait wzorce
+    'to zmieni wszystko', 'co się stało potem', 'punkt 7 cię zaskoczy',
+    'nigdy nie zgadniesz', 'poczekaj aż zobaczysz', 'poszło nie tak', 'viral',
+    
+    // POLISH - Manipulacja emocjonalna
+    'przerażające', 'druzgocące', 'oburzające', 'obrzydliwe', 'przerażające',
+    'pilne wiadomości', 'pilne', 'nagły', 'kryzys', 'katastrofa'
   ];
   
   const realIndicators = [
-    // Official sources
+    // English - Official sources
     'department', 'announces', 'ministry', 'government', 'official',
     'spokesperson', 'press release', 'statement', 'confirmed',
     
-    // Research terms
+    // English - Research terms
     'study', 'research', 'report', 'analysis', 'data', 'statistics',
     'findings', 'evidence', 'peer-reviewed', 'published', 'journal',
     
-    // News structure
+    // English - News structure
     'according to', 'sources say', 'reported', 'investigation',
     'interview', 'survey', 'poll', 'census', 'documentation',
     
-    // Institutional
+    // English - Institutional
     'university', 'institute', 'organization', 'committee',
     'commission', 'agency', 'bureau', 'council', 'board',
     
-    // Professional
+    // English - Professional
     'expert', 'professor', 'researcher', 'analyst', 'specialist',
-    'economist', 'scientist', 'doctor', 'physician', 'attorney'
+    'economist', 'scientist', 'doctor', 'physician', 'attorney',
+    
+    // POLISH - Oficjalne źródła
+    'ministerstwo', 'ogłasza', 'rząd', 'oficjalny', 'rzecznik',
+    'komunikat prasowy', 'oświadczenie', 'potwierdził', 'urząd',
+    
+    // POLISH - Terminy badawcze
+    'badanie', 'badania', 'raport', 'analiza', 'dane', 'statystyki',
+    'wyniki', 'dowody', 'recenzowane', 'opublikowane', 'czasopismo',
+    
+    // POLISH - Struktura newsów
+    'według', 'źródła podają', 'donosi', 'śledztwo',
+    'wywiad', 'ankieta', 'sondaż', 'spis', 'dokumentacja',
+    
+    // POLISH - Instytucjonalne
+    'uniwersytet', 'instytut', 'organizacja', 'komitet',
+    'komisja', 'agencja', 'biuro', 'rada', 'zarząd',
+    
+    // POLISH - Profesjonalne
+    'ekspert', 'profesor', 'badacz', 'analityk', 'specjalista',
+    'ekonomista', 'naukowiec', 'lekarz', 'doktor', 'prawnik'
   ];
   
   const lowerText = text.toLowerCase();
@@ -70,14 +110,42 @@ const predictFakeNews = (text, useFusion = true) => {
   let detectedFakePatterns = [];
   let detectedRealPatterns = [];
   
-  // Enhanced scoring with pattern weighting
+  // Detect language
+  const polishWords = ['i', 'w', 'na', 'z', 'do', 'że', 'się', 'nie', 'to', 'jest', 'co', 'jak', 'dla', 'od', 'po'];
+  const englishWords = ['the', 'and', 'in', 'to', 'of', 'a', 'that', 'is', 'it', 'with', 'for', 'as', 'was', 'on', 'are'];
+  
+  let polishCount = 0;
+  let englishCount = 0;
+  
+  polishWords.forEach(word => {
+    if (lowerText.includes(' ' + word + ' ') || lowerText.startsWith(word + ' ') || lowerText.endsWith(' ' + word)) {
+      polishCount++;
+    }
+  });
+  
+  englishWords.forEach(word => {
+    if (lowerText.includes(' ' + word + ' ') || lowerText.startsWith(word + ' ') || lowerText.endsWith(' ' + word)) {
+      englishCount++;
+    }
+  });
+  
+  const detectedLanguage = polishCount > englishCount ? 'pl' : 'en';
+  
+  // Enhanced scoring with pattern weighting and language awareness
   fakeIndicators.forEach(word => {
     if (lowerText.includes(word)) {
       // Weight different types of fake indicators
       let weight = 0.15;
+      
+      // English patterns
       if (word.includes('miracle') || word.includes('cure') || word.includes('secret')) weight = 0.25;
       if (word.includes('conspiracy') || word.includes('cover-up')) weight = 0.3;
       if (word.includes('you won\'t believe') || word.includes('shocking')) weight = 0.2;
+      
+      // Polish patterns
+      if (word.includes('cud') || word.includes('sekret') || word.includes('szokujące')) weight = 0.25;
+      if (word.includes('spisek') || word.includes('ukrywają')) weight = 0.3;
+      if (word.includes('nie uwierzysz') || word.includes('punkt 7')) weight = 0.2;
       
       fakeScore += weight;
       detectedFakePatterns.push(word);
@@ -88,9 +156,16 @@ const predictFakeNews = (text, useFusion = true) => {
     if (lowerText.includes(word)) {
       // Weight different types of real indicators
       let weight = 0.15;
+      
+      // English patterns
       if (word.includes('study') || word.includes('research') || word.includes('peer-reviewed')) weight = 0.3;
       if (word.includes('official') || word.includes('government') || word.includes('department')) weight = 0.25;
       if (word.includes('expert') || word.includes('professor') || word.includes('scientist')) weight = 0.2;
+      
+      // Polish patterns
+      if (word.includes('badanie') || word.includes('badania') || word.includes('recenzowane')) weight = 0.3;
+      if (word.includes('oficjalny') || word.includes('rząd') || word.includes('ministerstwo')) weight = 0.25;
+      if (word.includes('ekspert') || word.includes('profesor') || word.includes('naukowiec')) weight = 0.2;
       
       realScore += weight;
       detectedRealPatterns.push(word);
@@ -129,7 +204,13 @@ const predictFakeNews = (text, useFusion = true) => {
     prediction: isReal ? 'REAL' : 'FAKE',
     confidence: finalConfidence,
     cnn_probability: isReal ? realScore : fakeScore,
-    method: useFusion ? 'enhanced_fusion' : 'enhanced_cnn',
+    method: useFusion ? 'multilingual_enhanced_fusion' : 'multilingual_enhanced_cnn',
+    language: {
+      detected: detectedLanguage,
+      confidence: Math.abs(polishCount - englishCount) / Math.max(polishCount + englishCount, 1),
+      polish_indicators: polishCount,
+      english_indicators: englishCount
+    },
     kb_match: useFusion ? {
       real: detectedRealPatterns.slice(0, 3),
       fake: detectedFakePatterns.slice(0, 3)
@@ -139,7 +220,8 @@ const predictFakeNews = (text, useFusion = true) => {
       real_score: realScore.toFixed(3),
       excessive_punctuation: excessivePunctuation,
       caps_words: capsWords,
-      patterns_detected: detectedFakePatterns.length + detectedRealPatterns.length
+      patterns_detected: detectedFakePatterns.length + detectedRealPatterns.length,
+      language_detected: detectedLanguage === 'pl' ? 'Polish' : 'English'
     }
   };
 };
@@ -159,8 +241,16 @@ module.exports = async (req, res) => {
       status: 'online',
       model_loaded: true,
       kb_loaded: true,
-      version: '3.0.0',
-      platform: 'vercel-serverless'
+      version: '4.0.0-multilingual',
+      platform: 'vercel-serverless',
+      languages: ['English', 'Polish'],
+      features: [
+        'Enhanced pattern detection',
+        'Language auto-detection', 
+        'Weighted scoring system',
+        'Advanced heuristics',
+        'Multi-language support'
+      ]
     });
   }
   
