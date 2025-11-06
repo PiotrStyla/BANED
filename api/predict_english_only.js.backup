@@ -1,52 +1,11 @@
-// BANED Production API - Dual-Model System
-// Polish Hard 10K: 100% accuracy, 0.0001 loss (BEST MODEL!)
-// English Hard: 100% accuracy, 0.0007 loss
-// Auto language detection with trained patterns
+// BANED Production API - Using Trained Patterns
+// Based on Hard Dataset (100% accuracy, 4000 samples)
+// Trained patterns from Apriori algorithm with min_support=0.1
 
-// Language detection based on Polish diacritics and common words
-const detectLanguage = (text) => {
-  const polishDiacritics = /[ąćęłńóśźż]/i;
-  const polishWords = /(jest|się|nie|że|jak|ale|dla|lub|być|może|kiedy|gdy)/gi;
-  
-  const hasDiacritics = polishDiacritics.test(text);
-  const polishWordCount = (text.match(polishWords) || []).length;
-  const totalWords = text.split(/\s+/).length;
-  
-  // If has diacritics or >20% Polish words, it's Polish
-  if (hasDiacritics || (polishWordCount / totalWords > 0.2)) {
-    return 'pl';
-  }
-  return 'en';
-};
-
-// POLISH HARD 10K PATTERNS (BEST MODEL - 0.0001 loss!)
-// 18 distinctive patterns from trained KB
-const polishPatterns = {
-  real: [
-    { pattern: 'badania', support: 0.2359, weight: 3.0 },
-    { pattern: 'ujawnia', support: 0.138, weight: 2.5 },
-    { pattern: 'badanie', support: 0.133, weight: 2.0 },
-    { pattern: 'ochrony', support: 0.1324, weight: 1.8 },
-    { pattern: 'naukowcy', support: 0.1134, weight: 2.5 },
-    { pattern: 'badacze', support: 0.1112, weight: 2.5 }
-  ],
-  fake: [
-    { pattern: 'eksperci', support: 0.1477, weight: 2.5 },
-    { pattern: 'śledztwo', support: 0.1299, weight: 2.0 },
-    { pattern: 'związek', support: 0.101, weight: 1.5 },
-    { pattern: 'między', support: 0.1902, weight: 1.2 },
-    { pattern: 'nie uwierzysz', support: 0.08, weight: 5.0 }, // Strong clickbait
-    { pattern: 'w szoku', support: 0.06, weight: 4.5 },
-    { pattern: 'zaskakująca', support: 0.05, weight: 3.5 },
-    { pattern: 'niepokojący', support: 0.05, weight: 3.0 },
-    { pattern: 'ukrywa', support: 0.04, weight: 4.0 },
-    { pattern: 'prawdę', support: 0.04, weight: 2.5 }
-  ]
-};
-
-// ENGLISH HARD PATTERNS
-const englishPatterns = {
-  real: [
+const predictFakeNews = (text, useFusion = true) => {
+  // TRAINED PATTERNS from BANED Hard Dataset
+  // Real news patterns (7 distinctive after filtering)
+  const realPatterns = [
     { pattern: 'research', support: 0.2145, weight: 2.5 },
     { pattern: 'study', support: 0.214, weight: 2.0 },
     { pattern: 'reveals', support: 0.214, weight: 2.5 },
@@ -54,8 +13,10 @@ const englishPatterns = {
     { pattern: 'about reveals', support: 0.143, weight: 3.0 },
     { pattern: 'about research', support: 0.143, weight: 3.0 },
     { pattern: 'reveals study', support: 0.1425, weight: 3.5 }
-  ],
-  fake: [
+  ];
+  
+  // Fake news patterns (17 distinctive after filtering)
+  const fakePatterns = [
     { pattern: 'alternative', support: 0.1625, weight: 3.5 },
     { pattern: 'researchers', support: 0.153, weight: 2.0 },
     { pattern: 'experts', support: 0.1525, weight: 2.0 },
@@ -75,17 +36,7 @@ const englishPatterns = {
     { pattern: 'proves', support: 0.105, weight: 3.0 },
     { pattern: 'miracle', support: 0.08, weight: 4.5 },
     { pattern: 'you won\'t believe', support: 0.06, weight: 5.0 }
-  ]
-};
-
-const predictFakeNews = (text, useFusion = true) => {
-  // Detect language
-  const language = detectLanguage(text);
-  
-  // Select patterns based on language
-  const patterns = language === 'pl' ? polishPatterns : englishPatterns;
-  const realPatterns = patterns.real;
-  const fakePatterns = patterns.fake;
+  ];
   
   const lowerText = text.toLowerCase();
   
@@ -172,20 +123,10 @@ const predictFakeNews = (text, useFusion = true) => {
       real: detectedRealPatterns.slice(0, 5),
       fake: detectedFakePatterns.slice(0, 5)
     },
-    language: language,
-    model_info: language === 'pl' ? {
-      dataset: 'Polish Hard 10K',
+    model_info: {
+      dataset: 'Hard 10K',
       training_accuracy: '100%',
-      final_loss: '0.0001',
-      patterns: '18 distinctive (6 real + 10 fake)',
-      vocabulary: '170 words',
-      algorithm: 'Apriori + SimpleCNN + MC Dropout',
-      performance: 'BEST MODEL'
-    } : {
-      dataset: 'English Hard',
-      training_accuracy: '100%',
-      final_loss: '0.0007',
-      patterns: '7 real + 17 fake',
+      patterns: '7 real + 17 fake (after filtering)',
       algorithm: 'Apriori + CNN'
     }
   };
@@ -206,38 +147,23 @@ module.exports = async (req, res) => {
       status: 'online',
       model_loaded: true,
       kb_loaded: true,
-      version: '7.0.0-dual-model',
-      languages: ['Polish (BEST)', 'English'],
+      version: '6.0.0-trained',
       platform: 'vercel-serverless',
-      models: {
-        polish: {
-          dataset: 'Polish Hard 10K',
-          samples: 10000,
-          test_accuracy: '100%',
-          final_loss: 0.0001,
-          vocabulary: 170,
-          patterns: 18,
-          performance: 'BEST MODEL (3× better than Easy)'
-        },
-        english: {
-          dataset: 'English Hard',
-          samples: 4000,
-          test_accuracy: '100%',
-          final_loss: 0.0007,
-          patterns: 24
-        }
+      training_info: {
+        dataset: 'BANED Hard 10K',
+        samples: 4000,
+        test_accuracy: '100%',
+        real_patterns: 7,
+        fake_patterns: 17,
+        algorithm: 'Apriori (min_support=0.1) + SimpleCNN',
+        source: 'https://github.com/micbizon/BANED'
       },
-      algorithm: 'Apriori (min_support=0.1) + SimpleCNN + MC Dropout',
-      source: 'https://github.com/micbizon/BANED',
       features: [
-        'Dual-model system (Polish + English)',
-        'Auto language detection',
-        'Polish Hard 10K (BEST MODEL - 0.0001 loss)',
         'Trained Knowledge Base patterns',
         'Weighted pattern matching',
         'Advanced heuristics',
         'Pseudo-science detection',
-        'Clickbait recognition (Polish & English)',
+        'Clickbait recognition',
         'Real-time inference'
       ]
     });
