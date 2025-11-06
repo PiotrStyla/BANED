@@ -434,10 +434,14 @@ Example: 'Department of Health announces new vaccination program for children'"
         </div>
         
         <div class="footer">
-            <p>Powered by CNN + MC Dropout + Knowledge Base Fusion</p>
+            <p>🧠 Powered by TensorFlow.js Neural Network + Enhanced Pattern Detection</p>
+            <p style="margin-top: 5px; font-size: 0.9em; opacity: 0.8;">
+                Real-time ML inference • Multi-language support • Hybrid AI approach
+            </p>
             <p style="margin-top: 10px;">
                 <a href="https://github.com/PiotrStyla/BANED" target="_blank">View on GitHub</a> | 
-                <a href="/api/docs" target="_blank">API Docs</a>
+                <a href="/api/docs" target="_blank">API Docs</a> |
+                <a href="https://tensorflow.org/js" target="_blank">TensorFlow.js</a>
             </p>
         </div>
     </div>
@@ -468,19 +472,21 @@ Example: 'Department of Health announces new vaccination program for children'"
             try {
                 const response = await fetch(`${API_URL}/`);
                 const data = await response.json();
+                const statusElement = document.getElementById('apiStatus');
                 
-                const statusDiv = document.getElementById('apiStatus');
-                if (data.status === 'online' && data.model_loaded) {
-                    statusDiv.className = 'api-status online';
-                    statusDiv.textContent = `✅ API Online - Model Loaded (v${data.version})`;
+                if (data.model_loaded && data.kb_loaded) {
+                    const mlEngine = data.ml_engine || 'Unknown';
+                    const version = data.version || '5.0.0';
+                    statusElement.innerHTML = `✅ ${mlEngine} Model Online (v${version})`;
+                    statusElement.className = 'api-status online';
                 } else {
-                    statusDiv.className = 'api-status offline';
-                    statusDiv.textContent = '⚠️ API Online but Model Not Loaded';
+                    statusElement.innerHTML = '🧠 TensorFlow.js Model Training...';
+                    statusElement.className = 'api-status loading';
                 }
             } catch (error) {
-                const statusDiv = document.getElementById('apiStatus');
-                statusDiv.className = 'api-status offline';
-                statusDiv.textContent = '❌ API Offline - Deploy to Render first!';
+                const statusElement = document.getElementById('apiStatus');
+                statusElement.innerHTML = '❌ API Offline - Deploy to Vercel first!';
+                statusElement.className = 'api-status offline';
             }
         }
         

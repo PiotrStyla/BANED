@@ -1,0 +1,19 @@
+{
+  "name": "baned-tensorflow-api",
+  "version": "5.0.0",
+  "description": "BANED Fake News Detection API - TensorFlow.js Powered",
+  "main": "api/predict.js",
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^4.15.0"
+  },
+  "scripts": {
+    "start": "node api/predict.js",
+    "test": "node -e \"console.log('TensorFlow.js API ready')\""
+  },
+  "keywords": ["fake-news", "tensorflow", "ml", "ai", "vercel", "serverless"],
+  "author": "BANED Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

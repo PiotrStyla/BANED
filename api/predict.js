@@ -1,19 +1,32 @@
-// Vercel Serverless Function
-// No imports needed - Vercel handles everything
+// TensorFlow.js Powered Fake News Detection API
+const FakeNewsMLModel = require('./ml-model');
 
-// Load model and vocabulary (simplified for Vercel)
-const loadModel = async () => {
+// Global model instance
+let mlModel = null;
+let modelInitialized = false;
+
+// Initialize TensorFlow.js model
+const initializeModel = async () => {
+  if (modelInitialized) return mlModel;
+  
   try {
-    // In real deployment, you'd use TensorFlow.js or similar
-    // For now, return mock predictions
-    return {
-      model: null,
-      vocab: null,
-      loaded: true
-    };
+    console.log('Initializing TensorFlow.js model...');
+    mlModel = new FakeNewsMLModel();
+    
+    // Train the model (in production, you'd load pre-trained weights)
+    const trainingResult = await mlModel.trainModel();
+    
+    if (trainingResult.success) {
+      modelInitialized = true;
+      console.log(`Model trained successfully! Accuracy: ${trainingResult.finalAccuracy?.toFixed(4)}`);
+      return mlModel;
+    } else {
+      console.error('Model training failed:', trainingResult.error);
+      return null;
+    }
   } catch (error) {
-    console.error('Model loading error:', error);
-    return { model: null, vocab: null, loaded: false };
+    console.error('Error initializing model:', error);
+    return null;
   }
 };
 
@@ -237,26 +250,38 @@ module.exports = async (req, res) => {
   }
   
   if (req.method === 'GET') {
+    // Initialize model if not already done
+    if (!modelInitialized) {
+      await initializeModel();
+    }
+    
+    const modelInfo = mlModel ? mlModel.getModelInfo() : { isLoaded: false };
+    
     return res.json({
       status: 'online',
-      model_loaded: true,
+      model_loaded: modelInfo.isLoaded,
       kb_loaded: true,
-      version: '4.0.0-multilingual',
-      platform: 'vercel-serverless',
+      version: '5.0.0-tensorflow',
+      platform: 'vercel-serverless-tensorflow',
       languages: ['English', 'Polish'],
+      ml_engine: 'TensorFlow.js',
+      model_architecture: 'Sequential Neural Network',
       features: [
+        'TensorFlow.js Neural Network',
+        'Real-time ML inference',
         'Enhanced pattern detection',
         'Language auto-detection', 
         'Weighted scoring system',
         'Advanced heuristics',
         'Multi-language support'
-      ]
+      ],
+      model_info: modelInfo
     });
   }
   
   if (req.method === 'POST') {
     try {
-      const { text, use_fusion = true } = req.body;
+      const { text, use_fusion = true, use_ml = true } = req.body;
       
       if (!text || typeof text !== 'string') {
         return res.status(400).json({
@@ -264,14 +289,60 @@ module.exports = async (req, res) => {
         });
       }
       
-      const result = predictFakeNews(text, use_fusion);
+      // Initialize model if not already done
+      if (!modelInitialized) {
+        await initializeModel();
+      }
       
-      return res.json(result);
+      let mlResult = null;
+      let ruleBasedResult = null;
+      
+      // Get rule-based prediction
+      ruleBasedResult = predictFakeNews(text, use_fusion);
+      
+      // Get ML prediction if model is available and requested
+      if (use_ml && mlModel && mlModel.isLoaded) {
+        try {
+          mlResult = await mlModel.predict(text);
+        } catch (mlError) {
+          console.error('ML prediction error:', mlError);
+          mlResult = { error: 'ML prediction failed' };
+        }
+      }
+      
+      // Combine results if both are available
+      if (mlResult && !mlResult.error && ruleBasedResult) {
+        const combinedConfidence = (mlResult.confidence + ruleBasedResult.confidence) / 2;
+        const mlWeight = 0.6; // Give more weight to ML model
+        const ruleWeight = 0.4;
+        
+        const combinedProbability = (mlResult.real_probability * mlWeight) + 
+                                   (ruleBasedResult.cnn_probability * ruleWeight);
+        
+        return res.json({
+          prediction: combinedProbability > 0.5 ? 'REAL' : 'FAKE',
+          confidence: combinedConfidence,
+          method: 'hybrid_ml_rules',
+          ml_prediction: mlResult,
+          rule_based_prediction: ruleBasedResult,
+          combined_probability: combinedProbability,
+          model_weights: { ml: mlWeight, rules: ruleWeight }
+        });
+      }
+      
+      // Return ML result if available
+      if (mlResult && !mlResult.error) {
+        return res.json(mlResult);
+      }
+      
+      // Fallback to rule-based result
+      return res.json(ruleBasedResult);
       
     } catch (error) {
       console.error('Prediction error:', error);
       return res.status(500).json({
-        error: 'Internal server error'
+        error: 'Internal server error',
+        details: error.message
       });
     }
   }
