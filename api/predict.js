@@ -40,7 +40,16 @@ const polishPatterns = {
     { pattern: 'zaskakująca', support: 0.05, weight: 3.5 },
     { pattern: 'niepokojący', support: 0.05, weight: 3.0 },
     { pattern: 'ukrywa', support: 0.04, weight: 4.0 },
-    { pattern: 'prawdę', support: 0.04, weight: 2.5 }
+    { pattern: 'prawdę', support: 0.04, weight: 2.5 },
+    // Additional clickbait patterns
+    { pattern: 'szokujące', support: 0.06, weight: 4.5 },
+    { pattern: 'szokujący', support: 0.05, weight: 4.5 },
+    { pattern: 'cudowny', support: 0.05, weight: 4.0 },
+    { pattern: 'cudowna', support: 0.05, weight: 4.0 },
+    { pattern: 'nienawidzą', support: 0.04, weight: 4.0 },
+    { pattern: 'lekarze nienawidzą', support: 0.03, weight: 5.0 },
+    { pattern: 'jeden owoc', support: 0.02, weight: 4.5 },
+    { pattern: 'ten jeden', support: 0.03, weight: 3.0 }
   ]
 };
 
@@ -138,6 +147,27 @@ const predictFakeNews = (text, useFusion = true) => {
   if (clickbaitNumbers > 0) {
     fakeScore += 3.0 * clickbaitNumbers;
     detectedFakePatterns.push(`clickbait_numbers(${clickbaitNumbers})`);
+  }
+  
+  // Check for miracle cure patterns (Polish & English)
+  const miracleCure = /(cudowny|cudowna|miracle|magical).*(sposób|lek|cure|treatment|method).*(raka|choroby|cancer|disease)/i.test(text);
+  if (miracleCure) {
+    fakeScore += 5.0;
+    detectedFakePatterns.push('miracle_cure_claim');
+  }
+  
+  // Check for "doctors/experts hate" conspiracy (Polish & English)
+  const doctorsHate = /(lekarze|eksperci|doctors|experts).*(nienawidzą|ukrywają|hate|hiding|don't want)/i.test(text);
+  if (doctorsHate) {
+    fakeScore += 5.0;
+    detectedFakePatterns.push('conspiracy_doctors_hate');
+  }
+  
+  // Check for oversimplified solutions (Polish & English)
+  const simpleSolution = /(jeden|one|single|this one).*(owoc|sposób|trick|food|fruit)/i.test(text);
+  if (simpleSolution) {
+    fakeScore += 3.5;
+    detectedFakePatterns.push('oversimplified_solution');
   }
   
   // Bonus for proper news structure
