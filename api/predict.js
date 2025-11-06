@@ -119,11 +119,18 @@ const predictFakeNews = (text, useFusion = true) => {
     detectedFakePatterns.push(`excessive_punctuation(${excessivePunctuation})`);
   }
   
-  // Check for ALL CAPS words
-  const capsWords = (text.match(/\b[A-Z]{4,}\b/g) || []).length;
-  if (capsWords > 0) {
-    fakeScore += 1.5 * capsWords;
-    detectedFakePatterns.push(`caps_words(${capsWords})`);
+  // Check for ALL CAPS words (institutions/acronyms = REAL)
+  // Polish: GUS, NBP, KNF, NIK, ZUS, etc.
+  // English: WHO, NATO, UN, FDA, CDC, etc.
+  const capsWords = (text.match(/\b[A-Z]{3,}\b/g) || []).length;
+  if (capsWords > 0 && capsWords <= 5) {
+    // Moderate amount of acronyms = official/real news
+    realScore += 1.0 * capsWords;
+    detectedRealPatterns.push(`institutions(${capsWords})`);
+  } else if (capsWords > 5) {
+    // Too many CAPS = shouting/clickbait
+    fakeScore += 1.0 * (capsWords - 5);
+    detectedFakePatterns.push(`excessive_caps(${capsWords})`);
   }
   
   // Check for numbers in clickbait contexts
