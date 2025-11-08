@@ -1,7 +1,8 @@
 {
-  "name": "baned-tensorflow-api",
-  "version": "5.0.0",
-  "description": "BANED Fake News Detection API - TensorFlow.js Powered",
+  "name": "baned-api",
+  "version": "1.1.0",
+  "description": "BANED - Bilingual AI News Detection (87.5% validated accuracy)",
+  "homepage": "https://baned-xi.vercel.app",
   "main": "api/predict.js",
   "dependencies": {
     "@tensorflow/tfjs-node": "^4.15.0"

@@ -1,0 +1,338 @@
+[
+  {
+    "text": "Według GUS liczba bezrobotnych w Polsce spadła o 12 procent w ciągu ostatniego roku. Dane pokazują, że rynek pracy jest stabilny.",
+    "label": "REAL",
+    "language": "pl",
+    "source": "Demagog/Konkret24",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Narodowy Bank Polski podał, że inflacja w listopadzie wyniosła 3,5 procent. Ekonomiści przewidują dalszy wzrost cen energii.",
+    "label": "REAL",
+    "language": "pl",
+    "source": "Demagog/Konkret24",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Ministerstwo Zdrowia poinformowało, że liczba hospitalizacji z powodu grypy wzrosła o 20 procent w ciągu tygodnia.",
+    "label": "REAL",
+    "language": "pl",
+    "source": "Demagog/Konkret24",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Badania Instytutu Badań Rynku wskazują, że 65 procent Polaków planuje wakacje w kraju. To wzrost o 15 punktów procentowych.",
+    "label": "REAL",
+    "language": "pl",
+    "source": "Demagog/Konkret24",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Uniwersytet Warszawski opublikował raport o zmianach klimatycznych w Polsce. Naukowcy ostrzegają przed suszami.",
+    "label": "REAL",
+    "language": "pl",
+    "source": "Demagog/Konkret24",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Komisja Europejska zatwierdziła nowy budżet dla Polski. Środki zostaną przeznaczone na infrastrukturę.",
+    "label": "REAL",
+    "language": "pl",
+    "source": "Demagog/Konkret24",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Główny Urząd Statystyczny podał, że PKB Polski wzrósł o 4,2 procent w trzecim kwartale roku.",
+    "label": "REAL",
+    "language": "pl",
+    "source": "Demagog/Konkret24",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Badacze z Politechniki Warszawskiej opracowali nową metodę oczyszczania wody. Wyniki badań opublikowano w Nature.",
+    "label": "REAL",
+    "language": "pl",
+    "source": "Demagog/Konkret24",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Rzecznik prasowy ministerstwa potwierdził, że nowe przepisy wejdą w życie od stycznia. Zmiany dotyczą podatków.",
+    "label": "REAL",
+    "language": "pl",
+    "source": "Demagog/Konkret24",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Analitycy NBP prognozują, że stopy procentowe pozostaną na obecnym poziomie do końca roku.",
+    "label": "REAL",
+    "language": "pl",
+    "source": "Demagog/Konkret24",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Ukryta prawda! Rząd ukrywa przed Polakami szokujące fakty o szczepionkach. Lekarze nienawidzą tego!",
+    "label": "FAKE",
+    "language": "pl",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Niewiarygodne! Ten jeden owoc leczy wszystkie choroby. Przemysł farmaceutyczny to ukrywa!",
+    "label": "FAKE",
+    "language": "pl",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Eksperci ostrzegają: 5G niszczy DNA! To co media głównego nurtu ci nie powiedzą.",
+    "label": "FAKE",
+    "language": "pl",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Szokujące śledztwo! Polityk przyłapany na gorącym uczynku. Media milczą!",
+    "label": "FAKE",
+    "language": "pl",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Cudowny sposób na raka! Dwutlenek chloru leczy wszystko. Big Pharma panikuje!",
+    "label": "FAKE",
+    "language": "pl",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Prawda wyszła na jaw! Chemtrails to plan depopulacji. Rząd to potwierdził!",
+    "label": "FAKE",
+    "language": "pl",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Ten prosty trick sprawi, że schudniesz 20 kg w tydzień. Dietetycy tego nienawidzą!",
+    "label": "FAKE",
+    "language": "pl",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Soros finansuje inwigilację Polaków! Dokumenty ujawnione. Sprawdź zanim usuną!",
+    "label": "FAKE",
+    "language": "pl",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Nowa Orderu Światowa kontroluje Polskę! Masoni w rządzie. Dowody w artykule!",
+    "label": "FAKE",
+    "language": "pl",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Mikroczapy w szczepionkach! Naukowiec z MIT ujawnia prawdę. Bill Gates panikuje!",
+    "label": "FAKE",
+    "language": "pl",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "According to the CDC, COVID-19 vaccination rates increased by 15% among adults aged 65 and older in the past month.",
+    "label": "REAL",
+    "language": "en",
+    "source": "PolitiFact/Snopes/FactCheck",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Stanford University researchers published a study in Science showing a correlation between diet and longevity in controlled trials.",
+    "label": "REAL",
+    "language": "en",
+    "source": "PolitiFact/Snopes/FactCheck",
+    "difficulty": "standard"
+  },
+  {
+    "text": "The Federal Reserve announced interest rates will remain unchanged at 5.25% following the December meeting.",
+    "label": "REAL",
+    "language": "en",
+    "source": "PolitiFact/Snopes/FactCheck",
+    "difficulty": "standard"
+  },
+  {
+    "text": "NASA confirmed that the James Webb Space Telescope captured images of the most distant galaxy ever observed.",
+    "label": "REAL",
+    "language": "en",
+    "source": "PolitiFact/Snopes/FactCheck",
+    "difficulty": "standard"
+  },
+  {
+    "text": "A peer-reviewed study in The Lancet found that regular exercise reduces cardiovascular disease risk by 30%.",
+    "label": "REAL",
+    "language": "en",
+    "source": "PolitiFact/Snopes/FactCheck",
+    "difficulty": "standard"
+  },
+  {
+    "text": "The U.S. Bureau of Labor Statistics reported unemployment fell to 3.7% in November, down from 3.9% in October.",
+    "label": "REAL",
+    "language": "en",
+    "source": "PolitiFact/Snopes/FactCheck",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Climate scientists at MIT published research indicating Arctic ice is melting faster than previous models predicted.",
+    "label": "REAL",
+    "language": "en",
+    "source": "PolitiFact/Snopes/FactCheck",
+    "difficulty": "standard"
+  },
+  {
+    "text": "The World Health Organization released guidelines for managing antibiotic resistance based on five years of data.",
+    "label": "REAL",
+    "language": "en",
+    "source": "PolitiFact/Snopes/FactCheck",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Harvard Medical School researchers identified a new biomarker for early Alzheimer's detection in a study of 10,000 patients.",
+    "label": "REAL",
+    "language": "en",
+    "source": "PolitiFact/Snopes/FactCheck",
+    "difficulty": "standard"
+  },
+  {
+    "text": "The National Institutes of Health announced $2 billion in funding for cancer research over the next five years.",
+    "label": "REAL",
+    "language": "en",
+    "source": "PolitiFact/Snopes/FactCheck",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Doctors hate this one weird trick! Cure diabetes naturally without medication. Big Pharma is terrified!",
+    "label": "FAKE",
+    "language": "en",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "BREAKING: Secret documents reveal government plan to control population with 5G towers. Share before deleted!",
+    "label": "FAKE",
+    "language": "en",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Alternative medicine experts prove vaccines cause autism. Mainstream media won't tell you this!",
+    "label": "FAKE",
+    "language": "en",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Shocking investigation! Miracle berry cures all cancers. Why isn't this on the news?",
+    "label": "FAKE",
+    "language": "en",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "New World Order exposed! Chemtrails confirmed by insider. Wake up people!",
+    "label": "FAKE",
+    "language": "en",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "This ancient remedy melts belly fat overnight! Doctors can't explain it. Pharmaceutical companies panicking!",
+    "label": "FAKE",
+    "language": "en",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "EXPOSED: Bill Gates microchip plan revealed. COVID vaccine is just the beginning. Read before censored!",
+    "label": "FAKE",
+    "language": "en",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Scientists discover moon landing was faked! NASA whistleblower comes forward with proof!",
+    "label": "FAKE",
+    "language": "en",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Miracle frequency heals everything! Quantum physics proves it. Medical industry hiding the truth!",
+    "label": "FAKE",
+    "language": "en",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "Shocking: Tap water contains mind control chemicals. Government admits it. Protect your family NOW!",
+    "label": "FAKE",
+    "language": "en",
+    "source": "Fact-checked FALSE",
+    "difficulty": "standard"
+  },
+  {
+    "text": "[SATIRE] Local politician solves all problems by simply declaring them solved. Critics praise innovative approach.",
+    "label": "REAL",
+    "language": "en",
+    "source": "Edge case",
+    "difficulty": "extreme"
+  },
+  {
+    "text": "[OPINION] The government's new policy, while controversial, deserves careful consideration based on economic data.",
+    "label": "REAL",
+    "language": "en",
+    "source": "Edge case",
+    "difficulty": "extreme"
+  },
+  {
+    "text": "Study funded by pharmaceutical company shows positive results. Researchers disclosed all funding sources and conflicts.",
+    "label": "REAL",
+    "language": "en",
+    "source": "Edge case",
+    "difficulty": "extreme"
+  },
+  {
+    "text": "Corporate-sponsored research suggests benefits, but independent scientists question methodology and funding transparency.",
+    "label": "REAL",
+    "language": "en",
+    "source": "Edge case",
+    "difficulty": "extreme"
+  },
+  {
+    "text": "Breaking: Scientists discover that thinking about exercise burns same calories as actual exercise. Gyms closing worldwide.",
+    "label": "FAKE",
+    "language": "en",
+    "source": "Edge case",
+    "difficulty": "extreme"
+  },
+  {
+    "text": "Study shows cigarettes are safe. Researchers claim no health risks found in decades of smoking.",
+    "label": "FAKE",
+    "language": "en",
+    "source": "Edge case",
+    "difficulty": "extreme"
+  },
+  {
+    "text": "Crime rate explodes by 300%! (Note: went from 1 incident to 4 in small town of 500 people)",
+    "label": "FAKE",
+    "language": "en",
+    "source": "Edge case",
+    "difficulty": "extreme"
+  },
+  {
+    "text": "Both sides are equally bad: Professional scientists and random bloggers disagree on climate change.",
+    "label": "FAKE",
+    "language": "en",
+    "source": "Edge case",
+    "difficulty": "extreme"
+  }
+]

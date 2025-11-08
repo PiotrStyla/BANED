@@ -70,6 +70,53 @@ def get_itemsets(transactions, min_support_count):
     return all_frequent
 
 
+def apriori_algorithm(texts, min_support=0.1, max_length=3, output_file=None):
+    """Run Apriori algorithm on a list of texts.
+    
+    Args:
+        texts: List of text strings
+        min_support: Minimum support threshold (0-1)
+        max_length: Maximum pattern length
+        output_file: Optional CSV file to save results
+    
+    Returns:
+        Dictionary mapping patterns to support values
+    """
+    # Tokenize all texts
+    transactions = []
+    for text in texts:
+        if text:
+            tokens = tokenize(text)
+            if tokens:
+                transactions.append(tokens)
+    
+    if not transactions:
+        return {}
+    
+    total_transactions = len(transactions)
+    min_support_count = int(min_support * total_transactions)
+    
+    # Run Apriori
+    frequent_itemsets = get_itemsets(transactions, min_support_count)
+    
+    # Convert to dictionary of pattern: support
+    results = {}
+    for itemset, count in frequent_itemsets.items():
+        support = count / total_transactions
+        pattern = ' '.join(sorted(itemset))
+        results[pattern] = support
+    
+    # Optionally save to file
+    if output_file:
+        with open(output_file, 'w', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['pattern', 'support'])
+            for pattern, support in sorted(results.items(), key=lambda x: x[1], reverse=True):
+                writer.writerow([pattern, support])
+    
+    return results
+
+
 def process_file(input_file, min_support, output_file):
     """Process CSV and generate frequent itemsets."""
     print(f"[INFO] Reading from: {input_file}")
