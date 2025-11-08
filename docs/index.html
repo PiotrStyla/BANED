@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BANED - Fake News Detection</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="AI-Powered Fake News Detection using Bayesian Approach and Knowledge Base patterns. Supports Polish and English.">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BANED">
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png">
+    
     <style>
         * {
             margin: 0;
@@ -992,6 +1009,139 @@ Response Time:
 • Community-driven project
 
 Version: 5.0.1-tensorflow`);
+        }
+        
+        // PWA Installation
+        let deferredPrompt;
+        let installButton;
+        
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('✅ Service Worker registered successfully:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('❌ Service Worker registration failed:', error);
+                    });
+            });
+        }
+        
+        // PWA Install Prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing
+            e.preventDefault();
+            // Save the event for later use
+            deferredPrompt = e;
+            // Show install button
+            showInstallPromotion();
+        });
+        
+        function showInstallPromotion() {
+            // Create install banner if not exists
+            if (document.getElementById('installBanner')) return;
+            
+            const banner = document.createElement('div');
+            banner.id = 'installBanner';
+            banner.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 50px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                z-index: 10000;
+                animation: slideUp 0.3s ease-out;
+                max-width: 90%;
+            `;
+            
+            banner.innerHTML = `
+                <span style="font-weight: 600;">📱 Install BANED App</span>
+                <button id="installBtn" style="
+                    background: white;
+                    color: #667eea;
+                    border: none;
+                    padding: 8px 20px;
+                    border-radius: 20px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: transform 0.2s;
+                " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    Install
+                </button>
+                <button id="dismissBtn" style="
+                    background: transparent;
+                    color: white;
+                    border: 1px solid white;
+                    padding: 8px 15px;
+                    border-radius: 20px;
+                    font-weight: 600;
+                    cursor: pointer;
+                ">
+                    ✕
+                </button>
+            `;
+            
+            document.body.appendChild(banner);
+            
+            // Add animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideUp {
+                    from { transform: translateX(-50%) translateY(100px); opacity: 0; }
+                    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Install button handler
+            document.getElementById('installBtn').addEventListener('click', async () => {
+                if (!deferredPrompt) return;
+                
+                // Show the install prompt
+                deferredPrompt.prompt();
+                
+                // Wait for the user's response
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response: ${outcome}`);
+                
+                // Clear the prompt
+                deferredPrompt = null;
+                
+                // Remove banner
+                banner.remove();
+            });
+            
+            // Dismiss button handler
+            document.getElementById('dismissBtn').addEventListener('click', () => {
+                banner.remove();
+                // Remember user dismissed (optional - could use localStorage)
+            });
+        }
+        
+        // Detect if app was installed
+        window.addEventListener('appinstalled', () => {
+            console.log('✅ BANED PWA was installed successfully!');
+            // Hide install banner if visible
+            const banner = document.getElementById('installBanner');
+            if (banner) banner.remove();
+            
+            // Show thank you message
+            alert('🎉 Thank you for installing BANED! You can now use it offline.');
+        });
+        
+        // Check if running as PWA
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+            console.log('✅ Running as installed PWA');
+            // Add PWA-specific styling or features here
+            document.body.classList.add('pwa-mode');
         }
     </script>
 </body>

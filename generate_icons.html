@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate PWA Icons</title>
+</head>
+<body>
+    <h1>PWA Icon Generator for BANED</h1>
+    <p>Right-click each canvas and "Save image as..." to save the icons.</p>
+    <p>Save them in the static/icons/ folder with the correct names.</p>
+    
+    <div id="canvases"></div>
+    
+    <script>
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        const container = document.getElementById('canvases');
+        
+        sizes.forEach(size => {
+            // Create canvas
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            
+            // Rounded rectangle
+            const radius = size * 0.2;
+            ctx.beginPath();
+            ctx.moveTo(radius, 0);
+            ctx.lineTo(size - radius, 0);
+            ctx.quadraticCurveTo(size, 0, size, radius);
+            ctx.lineTo(size, size - radius);
+            ctx.quadraticCurveTo(size, size, size - radius, size);
+            ctx.lineTo(radius, size);
+            ctx.quadraticCurveTo(0, size, 0, size - radius);
+            ctx.lineTo(0, radius);
+            ctx.quadraticCurveTo(0, 0, radius, 0);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Shield outline
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = size * 0.04;
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const shieldWidth = size * 0.4;
+            const shieldHeight = size * 0.5;
+            
+            ctx.moveTo(centerX, centerY - shieldHeight/2);
+            ctx.lineTo(centerX - shieldWidth/2, centerY - shieldHeight/3);
+            ctx.lineTo(centerX - shieldWidth/2, centerY + shieldHeight/6);
+            ctx.quadraticCurveTo(
+                centerX - shieldWidth/2, 
+                centerY + shieldHeight/2,
+                centerX, 
+                centerY + shieldHeight/2
+            );
+            ctx.quadraticCurveTo(
+                centerX + shieldWidth/2, 
+                centerY + shieldHeight/2,
+                centerX + shieldWidth/2, 
+                centerY + shieldHeight/6
+            );
+            ctx.lineTo(centerX + shieldWidth/2, centerY - shieldHeight/3);
+            ctx.closePath();
+            ctx.stroke();
+            
+            // Checkmark
+            ctx.lineWidth = size * 0.05;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(centerX - shieldWidth/4, centerY);
+            ctx.lineTo(centerX - shieldWidth/8, centerY + shieldHeight/6);
+            ctx.lineTo(centerX + shieldWidth/3, centerY - shieldHeight/6);
+            ctx.stroke();
+            
+            // "B" letter
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.15}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('B', centerX, centerY + shieldHeight * 0.7);
+            
+            // Add label and download link
+            const div = document.createElement('div');
+            div.style.cssText = 'margin: 20px; display: inline-block;';
+            
+            const label = document.createElement('p');
+            label.textContent = `icon-${size}x${size}.png`;
+            label.style.fontWeight = 'bold';
+            
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = `icon-${size}x${size}.png`;
+            link.textContent = 'Download';
+            link.style.cssText = 'display: block; margin-top: 5px; padding: 5px 10px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; text-align: center;';
+            
+            div.appendChild(label);
+            div.appendChild(canvas);
+            div.appendChild(link);
+            container.appendChild(div);
+        });
+    </script>
+</body>
+</html>
