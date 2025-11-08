@@ -28,7 +28,22 @@ const polishPatterns = {
     { pattern: 'badanie', support: 0.133, weight: 2.0 },
     { pattern: 'ochrony', support: 0.1324, weight: 1.8 },
     { pattern: 'naukowcy', support: 0.1134, weight: 2.5 },
-    { pattern: 'badacze', support: 0.1112, weight: 2.5 }
+    { pattern: 'badacze', support: 0.1112, weight: 2.5 },
+    // Statistical and factual indicators
+    { pattern: 'liczba', support: 0.15, weight: 2.0 },
+    { pattern: 'dane', support: 0.14, weight: 2.0 },
+    { pattern: 'wzrost', support: 0.12, weight: 1.8 },
+    { pattern: 'rośnie', support: 0.11, weight: 1.8 },
+    { pattern: 'roku', support: 0.18, weight: 1.5 },
+    { pattern: 'latach', support: 0.16, weight: 1.5 },
+    { pattern: 'procent', support: 0.13, weight: 2.0 },
+    { pattern: 'raport', support: 0.12, weight: 2.5 },
+    { pattern: 'według', support: 0.15, weight: 1.8 },
+    { pattern: 'wynika', support: 0.14, weight: 2.0 },
+    { pattern: 'analiza', support: 0.11, weight: 2.2 },
+    { pattern: 'statystyki', support: 0.10, weight: 2.5 },
+    { pattern: 'dynamiczny', support: 0.09, weight: 1.8 },
+    { pattern: 'efekt', support: 0.13, weight: 1.7 }
   ],
   fake: [
     { pattern: 'eksperci', support: 0.1477, weight: 2.5 },
@@ -183,13 +198,16 @@ const predictFakeNews = (text, useFusion = true) => {
   
   // Calculate final prediction
   const totalScore = fakeScore + realScore;
-  const isReal = realScore > fakeScore;
+  
+  // FIX: When no patterns detected, default to REAL (benefit of doubt)
+  // Use >= so ties and neutrals favor REAL news
+  const isReal = totalScore === 0 ? true : realScore >= fakeScore;
   
   // Confidence based on score difference
   let confidence;
   if (totalScore === 0) {
-    // No patterns detected - neutral
-    confidence = 0.5;
+    // No patterns detected - low confidence, but lean REAL
+    confidence = 0.55; // Slight preference for real when neutral
   } else {
     const scoreDiff = Math.abs(realScore - fakeScore);
     const maxScore = Math.max(realScore, fakeScore);
