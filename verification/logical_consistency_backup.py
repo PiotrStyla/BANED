@@ -369,7 +369,7 @@ class DoublePowerVerifier:
             final_confidence = abs(adjusted_prediction - 0.5) * 2.0
         else:
             # Verification-only mode: more aggressive scoring
-            adjusted_prediction = 0.5 - (verification_score * 0.08)  # Fixed: negative score = higher fake prob
+            adjusted_prediction = 0.5 + (verification_score * 0.08)
             adjusted_prediction = max(0.0, min(1.0, adjusted_prediction))
             
             # If no issues detected in verification-only mode, bias toward REAL
