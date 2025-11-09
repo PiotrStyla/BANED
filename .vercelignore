@@ -1,0 +1,22 @@
+# Vercel ignore file
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+.git/
+.gitignore
+*.md
+!README.md
+models/
+*.pth
+*.npy
+*.csv
+test_*.py
+*_backup.py

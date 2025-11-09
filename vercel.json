@@ -2,30 +2,26 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/predict.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "docs/**",
-      "use": "@vercel/static"
+      "src": "api_vercel.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/api",
-      "dest": "/api/predict.js"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/predict.js"
-    },
-    {
       "src": "/",
-      "dest": "/docs/index.html"
+      "dest": "/api_vercel.py"
+    },
+    {
+      "src": "/predict",
+      "dest": "/api_vercel.py"
+    },
+    {
+      "src": "/web",
+      "dest": "/static/double_power.html"
     },
     {
       "src": "/(.*)",
-      "dest": "/docs/$1"
+      "dest": "/api_vercel.py"
     }
   ]
 }

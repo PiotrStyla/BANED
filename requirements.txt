@@ -1,5 +1,2 @@
-numpy>=1.21.0
-torch>=1.10.0
-fastapi
-uvicorn
-pydantic>=1.10.0
+# Minimal requirements for Vercel serverless deployment
+# No PyTorch needed - verification-only mode
