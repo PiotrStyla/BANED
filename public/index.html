@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BANED Double Power - Neural Verified Fake News Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .feature-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: white;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+
+        .powers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .power-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            text-align: center;
+        }
+
+        .power-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        label {
+            display: block;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .options {
+            display: flex;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .analyze-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .analyze-btn:active {
+            transform: translateY(0);
+        }
+
+        #results {
+            margin-top: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s;
+        }
+
+        #results.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result-header {
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .result-fake {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .result-real {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .result-uncertain {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #333;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .power-results {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .power-results h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .power-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .power-detail:last-child {
+            border-bottom: none;
+        }
+
+        .issues-section {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .issues-section h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .issue-item {
+            padding: 8px 0;
+            color: #856404;
+        }
+
+        .explanation {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .explanation h3 {
+            color: #1976D2;
+            margin-bottom: 15px;
+        }
+
+        .explanation-item {
+            padding: 8px 0;
+            color: #1565C0;
+        }
+
+        .examples {
+            margin-top: 40px;
+        }
+
+        .examples h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .example-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .example-btn {
+            padding: 12px 24px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .example-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .powers {
+                grid-template-columns: 1fr;
+            }
+
+            .main-card {
+                padding: 20px;
+            }
+
+            .options {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛡️ BANED Double Power</h1>
+            <p class="subtitle">Neural Verified Fake News Detection</p>
+            <div class="features">
+                <div class="feature-badge">🧠 Neural Network</div>
+                <div class="feature-badge">✓ Logical Verification</div>
+                <div class="feature-badge">🌍 Bilingual PL/EN</div>
+            </div>
+        </header>
+
+        <div class="powers">
+            <div class="power-card">
+                <h3>POWER 1</h3>
+                <p>🔴 CNN Pattern Recognition</p>
+            </div>
+            <div class="power-card">
+                <h3>POWER 2</h3>
+                <p>✓ Logical Consistency + Facts</p>
+            </div>
+        </div>
+
+        <div class="main-card">
+            <label for="newsText">Enter News Text to Verify:</label>
+            <textarea 
+                id="newsText" 
+                placeholder="Paste news article here... (Min 10 characters)&#10;&#10;Example: 'Scientists reveal 200% effective miracle cure that doctors hate!'"
+            ></textarea>
+
+            <div class="options">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="doublePower" checked>
+                    <label for="doublePower" style="margin: 0;">Enable Double Power Verification</label>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="autoDetect" checked>
+                    <label for="autoDetect" style="margin: 0;">Auto-detect Language</label>
+                </div>
+            </div>
+
+            <button class="analyze-btn" onclick="analyzeText()">
+                🔍 Analyze with Double Power
+            </button>
+
+            <div id="results"></div>
+
+            <div class="examples">
+                <h3>🚀 Quick Test Examples:</h3>
+                <div class="example-buttons">
+                    <button class="example-btn" onclick="loadExample(0)">🔴 Obvious Fake (English)</button>
+                    <button class="example-btn" onclick="loadExample(1)">🟢 Real News (English)</button>
+                    <button class="example-btn" onclick="loadExample(2)">🔴 Fake (Polish)</button>
+                    <button class="example-btn" onclick="loadExample(3)">🟡 Suspicious Claims</button>
+                    <button class="example-btn" onclick="loadExample(4)">🔴 Impossible Statistics</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://baned-xi.vercel.app';
+        
+        const examples = [
+            "Scientists reveal 200% effective miracle cure that doctors hate! Big pharma doesn't want you to know this shocking truth!",
+            "Government announces new environmental protection research program conducted by university scientists.",
+            "Nie uwierzysz! Eksperci ujawniają zaskakującą prawdę o szczepionkach. Media głównego nurtu tego nie pokażą!",
+            "COVID-19 pandemic started in 2015 according to mainstream media. Always trust the experts, they never make mistakes!",
+            "This miracle cure works 100% of the time with 0% side effects! Doctors are amazed!"
+        ];
+
+        function loadExample(index) {
+            document.getElementById('newsText').value = examples[index];
+        }
+
+        async function analyzeText() {
+            const text = document.getElementById('newsText').value.trim();
+            const useDoublePower = document.getElementById('doublePower').checked;
+            
+            if (text.length < 10) {
+                alert('Please enter at least 10 characters.');
+                return;
+            }
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="loading">Performing double power verification...</div>';
+            resultsDiv.classList.remove('show');
+
+            try {
+                const response = await fetch(`${API_URL}/predict`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        use_double_power: useDoublePower
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                displayResults(data);
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="issues-section">
+                        <h3>⚠️ Error</h3>
+                        <p>Error connecting to API: ${error.message}</p>
+                        <p>Make sure the server is running on port 8000.</p>
+                        <p>Run: python api_double_power.py</p>
+                    </div>
+                `;
+            }
+        }
+
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            
+            // Verdict header
+            let verdictClass = 'result-uncertain';
+            if (data.prediction === 'FAKE') verdictClass = 'result-fake';
+            if (data.prediction === 'REAL') verdictClass = 'result-real';
+            
+            let html = `
+                <div class="result-header ${verdictClass}">
+                    ${data.prediction === 'FAKE' ? '🚨' : data.prediction === 'REAL' ? '✅' : '⚠️'} ${data.prediction}
+                    <div style="font-size: 0.5em; margin-top: 10px;">Method: ${data.method}</div>
+                </div>
+            `;
+            
+            // Metrics
+            html += '<div class="metrics">';
+            html += `
+                <div class="metric-card">
+                    <div class="metric-label">Confidence</div>
+                    <div class="metric-value">${(data.confidence * 100).toFixed(1)}%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Fake Probability</div>
+                    <div class="metric-value">${(data.fake_probability * 100).toFixed(1)}%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Language</div>
+                    <div class="metric-value">${data.language.toUpperCase()}</div>
+                </div>
+            `;
+            
+            if (data.verification) {
+                html += `
+                    <div class="metric-card">
+                        <div class="metric-label">Verification Score</div>
+                        <div class="metric-value">${data.verification.verification_score}</div>
+                    </div>
+                `;
+            }
+            
+            html += '</div>';
+            
+            // Power 2 details
+            if (data.verification) {
+                const v = data.verification;
+                html += `
+                    <div class="power-results">
+                        <h3>✓ Power 2: Logical Verification</h3>
+                        <div class="power-detail">
+                            <span>Verdict:</span>
+                            <strong>${v.verdict}</strong>
+                        </div>
+                        <div class="power-detail">
+                            <span>Verification Score:</span>
+                            <strong>${v.verification_score}</strong>
+                        </div>
+                        <div class="power-detail">
+                            <span>Consistency:</span>
+                            <strong>${v.power_1_consistency.consistency_level}</strong>
+                        </div>
+                        <div class="power-detail">
+                            <span>Fact Check:</span>
+                            <strong>${v.power_2_fact_check.verification_level}</strong>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Issues
+            if (data.verification && data.verification.all_issues.length > 0) {
+                html += '<div class="issues-section"><h3>⚠️ Issues Detected</h3>';
+                data.verification.all_issues.forEach(issue => {
+                    html += `<div class="issue-item">${issue}</div>`;
+                });
+                html += '</div>';
+            }
+
+            // Explanation
+            if (data.explanation && data.explanation.length > 0) {
+                html += '<div class="explanation"><h3>💡 Analysis Explanation</h3>';
+                data.explanation.forEach(exp => {
+                    html += `<div class="explanation-item">${exp}</div>`;
+                });
+                html += '</div>';
+            }
+
+            resultsDiv.innerHTML = html;
+            resultsDiv.classList.add('show');
+        }
+
+        // Check API status on load
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch(`${API_URL}/`);
+                if (response.ok) {
+                    console.log('✅ API is online');
+                }
+            } catch (error) {
+                console.warn('⚠️ API not available');
+            }
+        });
+    </script>
+</body>
+</html>
