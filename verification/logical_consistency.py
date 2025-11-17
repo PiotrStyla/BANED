@@ -153,6 +153,112 @@ class LogicalConsistencyChecker:
         }
 
 
+class EmotionalLanguageDetector:
+    """
+    Detects emotionally charged language commonly used in fake news.
+    """
+    
+    def __init__(self):
+        # Emotional/sensational words
+        self.emotional_words = {
+            'en': [
+                'shocking', 'outrageous', 'devastating', 'horrifying', 'terrifying',
+                'unbelievable', 'incredible', 'amazing', 'stunning', 'explosive',
+                'bombshell', 'urgent', 'breaking', 'exclusive', 'revealed',
+                'exposed', 'secrets', 'hidden truth', 'conspiracy', 'cover-up'
+            ],
+            'pl': [
+                'szokujące', 'oburzające', 'druzgocące', 'przerażające', 'niewiarygodne',
+                'niesamowite', 'zdumiewające', 'pilne', 'najnowsze', 'ekskluzywne',
+                'ujawnione', 'sekrety', 'ukryta prawda', 'spisek', 'ukrywane'
+            ]
+        }
+        
+        # Fear-mongering words
+        self.fear_words = {
+            'en': ['danger', 'threat', 'risk', 'warning', 'alert', 'crisis', 'disaster'],
+            'pl': ['niebezpieczeństwo', 'zagrożenie', 'ryzyko', 'ostrzeżenie', 'alarm', 'kryzys', 'katastrofa']
+        }
+    
+    def analyze(self, text: str) -> Tuple[float, List[str]]:
+        """Detect emotional language"""
+        score = 0.0
+        issues = []
+        text_lower = text.lower()
+        
+        # Count emotional words
+        emotional_count = 0
+        for lang_words in self.emotional_words.values():
+            for word in lang_words:
+                if word in text_lower:
+                    emotional_count += 1
+        
+        # Count fear words
+        fear_count = 0
+        for lang_words in self.fear_words.values():
+            for word in lang_words:
+                if word in text_lower:
+                    fear_count += 1
+        
+        # Scoring
+        if emotional_count >= 3:
+            score -= 2.0
+            issues.append(f"High emotional language ({emotional_count} emotional words)")
+        elif emotional_count >= 2:
+            score -= 1.0
+            issues.append(f"Moderate emotional language ({emotional_count} emotional words)")
+        
+        if fear_count >= 2:
+            score -= 1.5
+            issues.append(f"Fear-mongering language ({fear_count} fear words)")
+        
+        return score, issues
+
+
+class StyleDetector:
+    """
+    Detects style markers typical of fake news (CAPS, excessive punctuation, etc.)
+    """
+    
+    def analyze(self, text: str) -> Tuple[float, List[str]]:
+        """Detect suspicious style markers"""
+        score = 0.0
+        issues = []
+        
+        # ALL CAPS words detection
+        words = text.split()
+        caps_words = [w for w in words if w.isupper() and len(w) > 2]
+        if len(caps_words) >= 3:
+            score -= 2.0
+            issues.append(f"Excessive ALL CAPS usage ({len(caps_words)} words)")
+        elif len(caps_words) >= 2:
+            score -= 1.0
+            issues.append(f"Multiple ALL CAPS words ({len(caps_words)} words)")
+        
+        # Excessive exclamation marks
+        exclamation_count = text.count('!')
+        if exclamation_count >= 5:
+            score -= 2.0
+            issues.append(f"Excessive exclamation marks ({exclamation_count})")
+        elif exclamation_count >= 3:
+            score -= 1.0
+            issues.append(f"Multiple exclamation marks ({exclamation_count})")
+        
+        # Multiple exclamation/question marks in sequence
+        if re.search(r'[!?]{3,}', text):
+            score -= 1.5
+            issues.append("Multiple punctuation marks in sequence (!!!, ???)")
+        
+        # Excessive emojis
+        emoji_pattern = r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF]'
+        emoji_count = len(re.findall(emoji_pattern, text))
+        if emoji_count >= 5:
+            score -= 1.0
+            issues.append(f"Excessive emoji usage ({emoji_count} emojis)")
+        
+        return score, issues
+
+
 class FactDatabase:
     """
     Knowledge base of known facts and impossible claims.
@@ -202,16 +308,46 @@ class FactDatabase:
             'antygrawitacja',
         ]
         
-        # Common fake news patterns
+        # Common fake news patterns (expanded)
         self.fake_patterns = [
+            # English
             'what they don\'t tell you',
+            'what they don\'t want you to know',
             'mainstream media won\'t report',
+            'mainstream media is hiding',
             'shocking truth revealed',
+            'the truth they hide',
             'you won\'t believe',
+            'this will blow your mind',
+            'doctors/scientists don\'t want you to know',
+            'they are lying to you',
+            'wake up people',
+            'open your eyes',
+            'do your own research',
+            'question everything',
+            'follow the money',
+            'the elite don\'t want',
+            'big pharma/tech/media doesn\'t want',
+            'censored by',
+            'banned by',
+            'they deleted this',
+            
+            # Polish
             'czego ci nie mówią',
+            'czego nie chcą żebyś wiedział',
             'media głównego nurtu ukrywają',
+            'media ukrywają prawdę',
             'szokująca prawda',
+            'prawda której ukrywają',
             'nie uwierzysz',
+            'obudź się',
+            'otwórz oczy',
+            'zbadaj sam',
+            'podążaj za pieniędzmi',
+            'elity nie chcą',
+            'wielkie koncerny nie chcą',
+            'cenzurowane przez',
+            'usunięte przez',
         ]
     
     def check_impossible_claims(self, text: str) -> Tuple[float, List[str]]:
@@ -317,6 +453,8 @@ class DoublePowerVerifier:
     def __init__(self):
         self.consistency_checker = LogicalConsistencyChecker()
         self.fact_database = FactDatabase()
+        self.emotional_detector = EmotionalLanguageDetector()
+        self.style_detector = StyleDetector()
     
     def verify(self, text: str, cnn_prediction: float = None) -> Dict:
         """
@@ -336,10 +474,18 @@ class DoublePowerVerifier:
         # Power 2: Fact Database Verification
         fact_results = self.fact_database.verify(text)
         
-        # Combine both verification powers
+        # Additional heuristics: Emotional Language
+        emotional_score, emotional_issues = self.emotional_detector.analyze(text)
+        
+        # Additional heuristics: Style Detection
+        style_score, style_issues = self.style_detector.analyze(text)
+        
+        # Combine all verification powers
         verification_score = (
             consistency_results['total_score'] + 
-            fact_results['total_score']
+            fact_results['total_score'] +
+            emotional_score +
+            style_score
         )
         
         # Calculate combined confidence impact
@@ -349,7 +495,12 @@ class DoublePowerVerifier:
         )
         
         # Collect all issues
-        all_issues = consistency_results['issues'] + fact_results['issues']
+        all_issues = (
+            consistency_results['issues'] + 
+            fact_results['issues'] +
+            emotional_issues +
+            style_issues
+        )
         
         # If we have CNN prediction, combine it with verification
         if cnn_prediction is not None:
@@ -395,6 +546,14 @@ class DoublePowerVerifier:
             'combined_confidence_impact': round(combined_confidence_impact, 4),
             'power_1_consistency': consistency_results,
             'power_2_fact_check': fact_results,
+            'emotional_analysis': {
+                'score': emotional_score,
+                'issues': emotional_issues
+            },
+            'style_analysis': {
+                'score': style_score,
+                'issues': style_issues
+            },
             'all_issues': all_issues
         }
 
