@@ -332,7 +332,8 @@
     <div class="container">
         <header>
             <h1>🛡️ BANED Double Power</h1>
-            <p class="subtitle">Neural Verified Fake News Detection</p>
+            <p class="subtitle">AI-Powered Fake News Pattern Detection</p>
+            <p style="font-size: 0.9em; margin-top: 10px; opacity: 0.85;">⚠️ Stage 1: Heuristic Analysis (patterns & logic, NOT fact verification)</p>
             <div class="features">
                 <div class="feature-badge">🧠 Neural Network</div>
                 <div class="feature-badge">✓ Logical Verification</div>
@@ -494,21 +495,25 @@
                 const v = data.verification;
                 html += `
                     <div class="power-results">
-                        <h3>✓ Power 2: Logical Verification</h3>
+                        <h3>📊 Stage 1: Heuristic Analysis</h3>
+                        <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 15px; border-radius: 5px; font-size: 0.9em; color: #856404;">
+                            ⚠️ This analyzes patterns, language, and logical consistency.<br>
+                            It does NOT verify facts against sources - that's Stage 2 (coming soon).
+                        </div>
                         <div class="power-detail">
                             <span>Verdict:</span>
                             <strong>${v.verdict}</strong>
                         </div>
                         <div class="power-detail">
-                            <span>Verification Score:</span>
+                            <span>Heuristic Score:</span>
                             <strong>${v.verification_score}</strong>
                         </div>
                         <div class="power-detail">
-                            <span>Consistency:</span>
+                            <span>Logical Consistency:</span>
                             <strong>${v.power_1_consistency.consistency_level}</strong>
                         </div>
                         <div class="power-detail">
-                            <span>Fact Check:</span>
+                            <span>Pattern Detection:</span>
                             <strong>${v.power_2_fact_check.verification_level}</strong>
                         </div>
                     </div>
@@ -574,6 +579,31 @@
                     <p style="color: #856404; font-size: 0.95em;">
                         🧪 Test the model • Experiment with different texts • Learn about fake news patterns<br>
                         🧪 Testuj model • Eksperymentuj z różnymi tekstami • Ucz się o wzorcach fake news
+                    </p>
+                </div>
+            </div>
+
+            <!-- How It Works -->
+            <div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 25px; border-radius: 15px; margin-bottom: 30px; border-left: 5px solid #4CAF50;">
+                <h3 style="color: #2E7D32; margin-bottom: 20px; font-size: 1.2em;">🔍 How BANED Works / Jak działa BANED</h3>
+                
+                <div style="background: rgba(255,255,255,0.6); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                    <h4 style="color: #2E7D32; margin-bottom: 10px;">📊 Stage 1: Heuristic Analysis (CURRENT)</h4>
+                    <p style="color: #2E7D32; line-height: 1.6; font-size: 0.95em;">
+                        <strong>🇬🇧 English:</strong> Analyzes text patterns, logical consistency, and language markers commonly found in fake news. This is NOT fact verification - it detects suspicious patterns and contradictions in the text itself.
+                    </p>
+                    <p style="color: #2E7D32; line-height: 1.6; font-size: 0.95em; margin-top: 10px;">
+                        <strong>🇵🇱 Polski:</strong> Analizuje wzorce tekstu, spójność logiczną i markery językowe typowe dla fake newsów. To NIE jest weryfikacja faktów - wykrywa podejrzane wzorce i sprzeczności w samym tekście.
+                    </p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.4); padding: 15px; border-radius: 10px;">
+                    <h4 style="color: #2E7D32; margin-bottom: 10px;">🔬 Stage 2: Fact Verification (COMING SOON)</h4>
+                    <p style="color: #2E7D32; line-height: 1.6; font-size: 0.95em;">
+                        <strong>🇬🇧 English:</strong> Will check specific claims against knowledge bases (e.g., Wikipedia) with transparent source attribution. Our interpretation method will be clearly documented.
+                    </p>
+                    <p style="color: #2E7D32; line-height: 1.6; font-size: 0.95em; margin-top: 10px;">
+                        <strong>🇵🇱 Polski:</strong> Będzie sprawdzać konkretne twierdzenia z bazami wiedzy (np. Wikipedia) z przejrzystym podaniem źródeł. Nasza metoda interpretacji będzie jasno udokumentowana.
                     </p>
                 </div>
             </div>

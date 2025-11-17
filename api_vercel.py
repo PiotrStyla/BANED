@@ -30,14 +30,14 @@ class handler(BaseHTTPRequestHandler):
                 "name": "BANED Double Power API",
                 "version": "4.0.0-vercel",
                 "status": "online",
-                "mode": "verification-only",
+                "mode": "heuristic-analysis",
                 "features": [
+                    "Heuristic Pattern Detection",
                     "Logical Consistency Checking",
-                    "Fact Database Verification",
-                    "Double Power Verification",
+                    "Fake News Pattern Recognition",
                     "Bilingual (PL/EN)"
                 ],
-                "note": "Running in serverless mode (verification-only, no CNN models)"
+                "note": "Stage 1: Heuristic analysis (patterns, logic, language) - NOT fact verification"
             }
             
             self.wfile.write(json.dumps(response).encode())
@@ -50,8 +50,8 @@ class handler(BaseHTTPRequestHandler):
             
             response = {
                 "status": "healthy",
-                "verification_active": True,
-                "double_power_enabled": True,
+                "heuristic_analysis_active": True,
+                "pattern_detection_enabled": True,
                 "mode": "serverless"
             }
             
@@ -98,13 +98,15 @@ class handler(BaseHTTPRequestHandler):
                     "confidence": result['confidence'],
                     "fake_probability": result['fake_probability'],
                     "language": lang,
-                    "method": "VERIFICATION_ONLY",
+                    "method": "HEURISTIC_ANALYSIS",
                     "cnn_score": None,
                     "verification": result,
                     "explanation": [
-                        f"Verification: {result['verdict']} (score: {result['verification_score']})",
-                        f"Consistency: {result['power_1_consistency']['consistency_level']}",
-                        f"Fact Check: {result['power_2_fact_check']['verification_level']}"
+                        "⚠️ Stage 1: Heuristic Analysis (patterns, logic, language)",
+                        "This is NOT fact verification - it detects suspicious patterns",
+                        f"Result: {result['verdict']} (score: {result['verification_score']})",
+                        f"Logical Consistency: {result['power_1_consistency']['consistency_level']}",
+                        f"Pattern Detection: {result['power_2_fact_check']['verification_level']}"
                     ]
                 }
                 
