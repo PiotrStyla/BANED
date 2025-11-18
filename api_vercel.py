@@ -92,26 +92,44 @@ class handler(BaseHTTPRequestHandler):
                 result = verifier.verify(text, cnn_prediction=None)
                 
                 # Build response
+                # Build explanation
+                explanation = [
+                    "⚠️ Stage 1: Heuristic Analysis (patterns, logic, language)",
+                    "This is NOT fact verification - it detects suspicious patterns",
+                    f"Result: {result['verdict']} (score: {result['verification_score']})",
+                    f"Logical Consistency: {result['power_1_consistency']['consistency_level']}",
+                    f"Pattern Detection: {result['power_2_fact_check']['verification_level']}"
+                ]
+                
+                # Add Stage 2 info if available
+                if result.get('stage2_enabled') and result.get('stage2_fact_verification'):
+                    stage2 = result['stage2_fact_verification']
+                    explanation.append("")
+                    explanation.append("🔬 Stage 2: Fact Verification (Wikipedia-based)")
+                    explanation.append(f"Status: {stage2['status']}")
+                    explanation.append(f"Checked {stage2['total_checks']} facts: {stage2['verified_count']} verified, {stage2['contradicted_count']} contradicted")
+                    
+                    # Show contradicted facts
+                    if stage2['contradicted_count'] > 0:
+                        for check in stage2['checks']:
+                            if check['status'] == 'contradicted':
+                                explanation.append(f"  ❌ {check['topic']}: {check['detail']}")
+                
                 response = {
                     "text": text[:200],
                     "prediction": result['verdict'],
                     "confidence": result['confidence'],
                     "fake_probability": result['fake_probability'],
                     "language": lang,
-                    "method": "HEURISTIC_ANALYSIS",
+                    "method": "HEURISTIC_ANALYSIS" if not result.get('stage2_enabled') else "STAGE1+STAGE2",
                     "cnn_score": None,
                     "verification": result,
-                    "explanation": [
-                        "⚠️ Stage 1: Heuristic Analysis (patterns, logic, language)",
-                        "This is NOT fact verification - it detects suspicious patterns",
-                        f"Result: {result['verdict']} (score: {result['verification_score']})",
-                        f"Logical Consistency: {result['power_1_consistency']['consistency_level']}",
-                        f"Pattern Detection: {result['power_2_fact_check']['verification_level']}"
-                    ]
+                    "explanation": explanation
                 }
                 
                 if result['all_issues']:
-                    response['explanation'].append(f"Issues found: {len(result['all_issues'])}")
+                    response['explanation'].append(f"")
+                    response['explanation'].append(f"⚠️ Issues found: {len(result['all_issues'])}")
                     for issue in result['all_issues'][:3]:
                         response['explanation'].append(f"  • {issue}")
                 

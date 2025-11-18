@@ -7,6 +7,16 @@ Implements neural verification concepts for sound fake news detection
 import re
 from typing import Dict, List, Tuple
 from datetime import datetime
+try:
+    from verification.fact_checker import FactChecker
+    FACT_CHECKER_AVAILABLE = True
+except ImportError:
+    try:
+        from fact_checker import FactChecker
+        FACT_CHECKER_AVAILABLE = True
+    except ImportError:
+        FACT_CHECKER_AVAILABLE = False
+        print("⚠ FactChecker not available - Stage 2 disabled")
 
 
 class LogicalConsistencyChecker:
@@ -455,6 +465,19 @@ class DoublePowerVerifier:
         self.fact_database = FactDatabase()
         self.emotional_detector = EmotionalLanguageDetector()
         self.style_detector = StyleDetector()
+        # Stage 2: Fact Checker (if available)
+        if FACT_CHECKER_AVAILABLE:
+            try:
+                self.fact_checker = FactChecker()
+                self.stage2_enabled = True
+                print("✓ Stage 2: Fact Verification enabled")
+            except Exception as e:
+                self.fact_checker = None
+                self.stage2_enabled = False
+                print(f"⚠ Stage 2 initialization failed: {e}")
+        else:
+            self.fact_checker = None
+            self.stage2_enabled = False
     
     def verify(self, text: str, cnn_prediction: float = None) -> Dict:
         """
@@ -468,10 +491,11 @@ class DoublePowerVerifier:
         Returns:
             Comprehensive verification report with final confidence
         """
+        # Stage 1: Heuristic Analysis
         # Power 1: Logical Consistency Check
         consistency_results = self.consistency_checker.analyze(text)
         
-        # Power 2: Fact Database Verification
+        # Power 2: Fact Database Verification (patterns)
         fact_results = self.fact_database.verify(text)
         
         # Additional heuristics: Emotional Language
@@ -480,12 +504,25 @@ class DoublePowerVerifier:
         # Additional heuristics: Style Detection
         style_score, style_issues = self.style_detector.analyze(text)
         
+        # Stage 2: Fact Verification (if enabled)
+        fact_check_results = None
+        fact_check_score = 0.0
+        if self.stage2_enabled and self.fact_checker:
+            try:
+                fact_check_results = self.fact_checker.verify(text)
+                fact_check_score = fact_check_results['fact_check_score']
+            except Exception as e:
+                print(f"⚠ Stage 2 verification failed: {e}")
+                fact_check_results = None
+                fact_check_score = 0.0
+        
         # Combine all verification powers
         verification_score = (
             consistency_results['total_score'] + 
             fact_results['total_score'] +
             emotional_score +
-            style_score
+            style_score +
+            fact_check_score  # Stage 2 contribution
         )
         
         # Calculate combined confidence impact
@@ -538,24 +575,41 @@ class DoublePowerVerifier:
         else:
             verdict = "UNCERTAIN"
         
-        return {
+        result = {
             'verdict': verdict,
             'fake_probability': round(adjusted_prediction, 4),
             'confidence': round(final_confidence, 4),
             'verification_score': round(verification_score, 2),
             'combined_confidence_impact': round(combined_confidence_impact, 4),
-            'power_1_consistency': consistency_results,
-            'power_2_fact_check': fact_results,
-            'emotional_analysis': {
-                'score': emotional_score,
-                'issues': emotional_issues
-            },
-            'style_analysis': {
-                'score': style_score,
-                'issues': style_issues
+            'stage1_heuristics': {
+                'power_1_consistency': consistency_results,
+                'power_2_patterns': fact_results,
+                'emotional_analysis': {
+                    'score': emotional_score,
+                    'issues': emotional_issues
+                },
+                'style_analysis': {
+                    'score': style_score,
+                    'issues': style_issues
+                }
             },
             'all_issues': all_issues
         }
+        
+        # Add Stage 2 results if available
+        if fact_check_results:
+            result['stage2_fact_verification'] = fact_check_results
+            result['stage2_enabled'] = True
+        else:
+            result['stage2_enabled'] = False
+        
+        # Keep old keys for backwards compatibility
+        result['power_1_consistency'] = consistency_results
+        result['power_2_fact_check'] = fact_results
+        result['emotional_analysis'] = {'score': emotional_score, 'issues': emotional_issues}
+        result['style_analysis'] = {'score': style_score, 'issues': style_issues}
+        
+        return result
 
 
 if __name__ == "__main__":

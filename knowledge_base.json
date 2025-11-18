@@ -1,0 +1,210 @@
+{
+  "knowledge_base_version": "1.0.0",
+  "reference_date": "2024-11",
+  "description": "Stage 2: Fact Verification Knowledge Base",
+  "interpretation_philosophy": "We present facts from reliable sources (primarily Wikipedia) with transparent source attribution. For controversial topics, we acknowledge the controversy and present the mainstream scientific/historical consensus while noting that interpretations may vary.",
+  "sources": {
+    "wikipedia_en": "https://en.wikipedia.org/",
+    "wikipedia_pl": "https://pl.wikipedia.org/",
+    "manual_curation": "Manually curated and verified facts"
+  },
+  "facts": [
+    {
+      "id": "hist_wwi_dates",
+      "category": "history",
+      "topic": "world_war_i",
+      "claim_type": "date_range",
+      "statement": "World War I lasted from 1914 to 1918",
+      "value": {
+        "start_year": 1914,
+        "end_year": 1918,
+        "start_date": "1914-07-28",
+        "end_date": "1918-11-11"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/World_War_I",
+        "retrieved": "2024-11",
+        "summary": "WWI was a global conflict from July 28, 1914 to November 11, 1918"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Dates are historically documented and undisputed.",
+      "keywords": ["world war 1", "wwi", "first world war", "i wojna światowa", "1914", "1918"]
+    },
+    {
+      "id": "hist_wwii_dates",
+      "category": "history",
+      "topic": "world_war_ii",
+      "claim_type": "date_range",
+      "statement": "World War II lasted from 1939 to 1945",
+      "value": {
+        "start_year": 1939,
+        "end_year": 1945,
+        "start_date": "1939-09-01",
+        "end_date": "1945-09-02"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/World_War_II",
+        "retrieved": "2024-11",
+        "summary": "WWII was a global conflict from September 1, 1939 to September 2, 1945"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Dates are historically documented and undisputed.",
+      "keywords": ["world war 2", "wwii", "second world war", "ii wojna światowa", "1939", "1945"]
+    },
+    {
+      "id": "hist_covid19_emergence",
+      "category": "history",
+      "topic": "covid19_pandemic",
+      "claim_type": "date",
+      "statement": "COVID-19 pandemic began in late 2019",
+      "value": {
+        "emergence_year": 2019,
+        "emergence_month": 12,
+        "location": "Wuhan, China",
+        "who_pandemic_declaration": "2020-03-11"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/COVID-19_pandemic",
+        "retrieved": "2024-11",
+        "summary": "First cases identified in Wuhan, China in December 2019"
+      },
+      "controversy_level": "moderate",
+      "interpretation_note": "The origin date and location are documented. Origins and response remain subjects of ongoing investigation and debate.",
+      "keywords": ["covid", "covid-19", "coronavirus", "pandemic", "2019", "2020", "pandemia"]
+    },
+    {
+      "id": "bio_human_sex_chromosomes",
+      "category": "biology",
+      "topic": "human_sex",
+      "claim_type": "definition",
+      "statement": "Biological sex in humans is primarily determined by sex chromosomes",
+      "value": {
+        "chromosome_pairs": {
+          "female": "XX",
+          "male": "XY"
+        },
+        "typical_categories": ["female", "male"],
+        "intersex_note": "Intersex variations exist (estimates ~0.018-1.7% depending on definition)"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Sex_chromosome",
+        "retrieved": "2024-11",
+        "summary": "Human sex chromosomes are X and Y; typical patterns are XX (female) and XY (male)"
+      },
+      "controversy_level": "high",
+      "interpretation_note": "This describes biological sex based on chromosomes. Gender identity is a separate concept related to psychological and social identity. Intersex variations exist. This is a complex topic with biological, social, and personal dimensions.",
+      "keywords": ["biological sex", "chromosomes", "xx", "xy", "male", "female", "płeć biologiczna", "chromosomy"]
+    },
+    {
+      "id": "bio_human_body_temperature",
+      "category": "biology",
+      "topic": "human_physiology",
+      "claim_type": "measurement",
+      "statement": "Normal human body temperature is approximately 37°C (98.6°F)",
+      "value": {
+        "celsius": 37.0,
+        "fahrenheit": 98.6,
+        "normal_range_celsius": [36.1, 37.2],
+        "note": "Varies by individual, time of day, and measurement method"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Human_body_temperature",
+        "retrieved": "2024-11",
+        "summary": "Average oral temperature is about 36.8°C (98.2°F); traditional 37°C is slightly high"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Well-established medical fact, though exact values vary slightly.",
+      "keywords": ["body temperature", "temperatura ciała", "37", "98.6", "celsius", "fahrenheit"]
+    },
+    {
+      "id": "sci_speed_of_light",
+      "category": "science",
+      "topic": "physics",
+      "claim_type": "measurement",
+      "statement": "Speed of light in vacuum is approximately 299,792 km/s",
+      "value": {
+        "meters_per_second": 299792458,
+        "kilometers_per_second": 299792.458,
+        "symbol": "c"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Speed_of_light",
+        "retrieved": "2024-11",
+        "summary": "The speed of light in vacuum is exactly 299,792,458 m/s by definition"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Fundamental physical constant, precisely defined and measured.",
+      "keywords": ["speed of light", "prędkość światła", "light speed", "299792", "c"]
+    },
+    {
+      "id": "sci_earth_gravity",
+      "category": "science",
+      "topic": "physics",
+      "claim_type": "measurement",
+      "statement": "Acceleration due to gravity on Earth is approximately 9.8 m/s²",
+      "value": {
+        "meters_per_second_squared": 9.80665,
+        "standard_value": 9.8,
+        "note": "Varies slightly by location (9.76 to 9.83 m/s²)"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Gravity_of_Earth",
+        "retrieved": "2024-11",
+        "summary": "Standard gravity is defined as 9.80665 m/s²"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Well-established physical measurement.",
+      "keywords": ["gravity", "grawitacja", "acceleration", "9.8", "g", "earth gravity"]
+    },
+    {
+      "id": "sci_water_boiling_point",
+      "category": "science",
+      "topic": "chemistry",
+      "claim_type": "measurement",
+      "statement": "Water boils at 100°C (212°F) at standard atmospheric pressure",
+      "value": {
+        "celsius": 100.0,
+        "fahrenheit": 212.0,
+        "pressure_condition": "1 atmosphere (101.325 kPa)",
+        "note": "Boiling point varies with altitude and pressure"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Boiling_point",
+        "retrieved": "2024-11",
+        "summary": "Water boils at 100°C at sea level pressure"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Basic chemistry fact, well-established.",
+      "keywords": ["boiling point", "temperatura wrzenia", "water", "woda", "100", "212"]
+    },
+    {
+      "id": "sci_solar_system_planets",
+      "category": "science",
+      "topic": "astronomy",
+      "claim_type": "count",
+      "statement": "There are 8 planets in the Solar System (since 2006)",
+      "value": {
+        "count": 8,
+        "planets": ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"],
+        "note": "Pluto was reclassified as a dwarf planet in 2006"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Planet",
+        "retrieved": "2024-11",
+        "summary": "IAU definition from 2006 recognizes 8 planets"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Official IAU classification. Some still consider Pluto a planet colloquially.",
+      "keywords": ["planets", "planety", "solar system", "układ słoneczny", "8 planets", "pluto"]
+    }
+  ]
+}

@@ -490,15 +490,16 @@
             
             html += '</div>';
             
-            // Power 2 details
+            // Stage 1 details
             if (data.verification) {
                 const v = data.verification;
+                const stage2Status = v.stage2_enabled ? '✓ Active' : '(Coming soon)';
                 html += `
                     <div class="power-results">
                         <h3>📊 Stage 1: Heuristic Analysis</h3>
                         <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 15px; border-radius: 5px; font-size: 0.9em; color: #856404;">
                             ⚠️ This analyzes patterns, language, and logical consistency.<br>
-                            It does NOT verify facts against sources - that's Stage 2 (coming soon).
+                            It does NOT verify facts against sources - that's Stage 2 ${stage2Status}.
                         </div>
                         <div class="power-detail">
                             <span>Verdict:</span>
@@ -518,6 +519,73 @@
                         </div>
                     </div>
                 `;
+                
+                // Stage 2: Fact Verification (if available)
+                if (v.stage2_enabled && v.stage2_fact_verification) {
+                    const s2 = v.stage2_fact_verification;
+                    let statusColor = '#28a745';
+                    if (s2.status === 'CONTRADICTIONS_FOUND') statusColor = '#dc3545';
+                    else if (s2.status === 'RELEVANT_TOPICS') statusColor = '#ffc107';
+                    
+                    html += `
+                        <div class="power-results" style="margin-top: 20px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);">
+                            <h3>🔬 Stage 2: Fact Verification</h3>
+                            <div style="background: rgba(255,255,255,0.7); border-left: 4px solid #4CAF50; padding: 10px; margin-bottom: 15px; border-radius: 5px; font-size: 0.9em; color: #2E7D32;">
+                                ✓ Checks claims against knowledge base (Wikipedia-sourced facts).<br>
+                                Shows sources with transparent attribution.
+                            </div>
+                            <div class="power-detail">
+                                <span>Status:</span>
+                                <strong style="color: ${statusColor}">${s2.status.replace(/_/g, ' ')}</strong>
+                            </div>
+                            <div class="power-detail">
+                                <span>Facts Checked:</span>
+                                <strong>${s2.total_checks}</strong>
+                            </div>
+                            <div class="power-detail">
+                                <span>✅ Verified:</span>
+                                <strong>${s2.verified_count}</strong>
+                            </div>
+                            <div class="power-detail">
+                                <span>❌ Contradicted:</span>
+                                <strong>${s2.contradicted_count}</strong>
+                            </div>
+                    `;
+                    
+                    // Show fact checks with sources
+                    if (s2.checks && s2.checks.length > 0) {
+                        html += '<div style="margin-top: 15px;">';
+                        s2.checks.forEach(check => {
+                            if (check.status !== 'mentioned') {
+                                const icon = check.status === 'verified' ? '✅' : '❌';
+                                const color = check.status === 'verified' ? '#28a745' : '#dc3545';
+                                html += `
+                                    <div style="background: rgba(255,255,255,0.9); padding: 12px; margin: 8px 0; border-radius: 8px; border-left: 3px solid ${color};">
+                                        <div style="font-weight: 600; color: ${color}; margin-bottom: 5px;">
+                                            ${icon} ${check.topic.replace(/_/g, ' ').toUpperCase()}
+                                        </div>
+                                        <div style="font-size: 0.9em; color: #333; margin-bottom: 5px;">
+                                            ${check.detail}
+                                        </div>
+                                        ${check.source ? `
+                                            <div style="font-size: 0.85em; color: #666;">
+                                                📚 Source: <a href="${check.source.url}" target="_blank" style="color: #1976D2;">${check.source.url.split('/').pop()}</a>
+                                            </div>
+                                        ` : ''}
+                                        ${check.controversy_level === 'high' ? `
+                                            <div style="font-size: 0.85em; color: #856404; background: #fff3cd; padding: 5px; border-radius: 3px; margin-top: 5px;">
+                                                ⚠️ Note: This is a controversial topic. ${check.interpretation_note || ''}
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                `;
+                            }
+                        });
+                        html += '</div>';
+                    }
+                    
+                    html += `</div>`;
+                }
             }
 
             // Issues
