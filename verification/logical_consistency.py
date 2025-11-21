@@ -16,7 +16,7 @@ except ImportError:
         FACT_CHECKER_AVAILABLE = True
     except ImportError:
         FACT_CHECKER_AVAILABLE = False
-        print("⚠ FactChecker not available - Stage 2 disabled")
+        print("FactChecker not available - Stage 2 disabled")
 
 
 class LogicalConsistencyChecker:
@@ -470,11 +470,11 @@ class DoublePowerVerifier:
             try:
                 self.fact_checker = FactChecker()
                 self.stage2_enabled = True
-                print("✓ Stage 2: Fact Verification enabled")
+                print("Stage 2: Fact Verification enabled")
             except Exception as e:
                 self.fact_checker = None
                 self.stage2_enabled = False
-                print(f"⚠ Stage 2 initialization failed: {e}")
+                print(f"Stage 2 initialization failed: {e}")
         else:
             self.fact_checker = None
             self.stage2_enabled = False

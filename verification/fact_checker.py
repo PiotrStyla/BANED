@@ -40,12 +40,12 @@ class FactChecker:
                     'reference_date': data.get('reference_date', 'unknown'),
                     'philosophy': data.get('interpretation_philosophy', '')
                 }
-                print(f"✓ Loaded {len(self.facts)} facts from knowledge base")
+                print(f"[KB] Loaded {len(self.facts)} facts from knowledge base")
         except FileNotFoundError:
-            print(f"⚠ Knowledge base not found at {self.knowledge_base_path}")
+            print(f"[KB WARNING] Knowledge base not found at {self.knowledge_base_path}")
             self.facts = []
         except json.JSONDecodeError as e:
-            print(f"⚠ Error parsing knowledge base: {e}")
+            print(f"[KB WARNING] Error parsing knowledge base: {e}")
             self.facts = []
     
     def extract_years(self, text: str) -> List[int]:
@@ -55,10 +55,47 @@ class FactChecker:
         return [int(y) for y in years]
     
     def extract_numbers(self, text: str) -> List[float]:
-        """Extract numerical values from text"""
-        # Match integers and decimals
-        numbers = re.findall(r'\b(\d+\.?\d*)\b', text)
-        return [float(n) for n in numbers if len(n) <= 10]  # Avoid matching years as numbers
+        """Extract numerical values from text.
+        Handles integers, decimals, and numbers with thousands separators.
+        Years (1000-2999) are handled separately in extract_years and skipped here.
+        """
+        numbers: List[float] = []
+
+        # First handle numbers with thousands separators like 8,849 or 300,000
+        thousand_matches = re.findall(r"\b\d{1,3}(?:,\d{3})+\b", text)
+        cleaned = text
+        for m in thousand_matches:
+            try:
+                value = float(m.replace(",", ""))
+            except ValueError:
+                continue
+            numbers.append(value)
+            # Remove this match from text so it isn't double-counted later
+            cleaned = cleaned.replace(m, " ")
+
+        # Replace remaining commas with spaces to avoid splitting decimals oddly
+        cleaned = cleaned.replace(",", " ")
+
+        # Match integers and decimals (without thousands separators)
+        simple_matches = re.findall(r"\b\d+\.?\d*\b", cleaned)
+        for m in simple_matches:
+            if len(m) > 10:
+                continue
+            try:
+                value = float(m)
+            except ValueError:
+                continue
+            # Skip year-like numbers (handled by extract_years)
+            if 1000 <= value <= 2999:
+                continue
+            numbers.append(value)
+
+        # Deduplicate while preserving order
+        unique_numbers: List[float] = []
+        for v in numbers:
+            if v not in unique_numbers:
+                unique_numbers.append(v)
+        return unique_numbers
     
     def check_fact(self, text: str) -> Tuple[List[Dict], float]:
         """
@@ -108,8 +145,10 @@ class FactChecker:
                     fact_years.append(fact['value']['end_year'])
                 if 'emergence_year' in fact['value']:
                     fact_years.append(fact['value']['emergence_year'])
+                if 'year' in fact['value']:
+                    fact_years.append(fact['value']['year'])
                 
-                if mentioned_years:
+                if mentioned_years and fact_years:
                     matching_years = [y for y in mentioned_years if y in fact_years]
                     wrong_years = [y for y in mentioned_years if y not in fact_years and abs(y - max(fact_years)) <= 50]
                     
@@ -124,6 +163,14 @@ class FactChecker:
                     else:
                         check_result['status'] = 'mentioned'
                         check_result['detail'] = "Topic mentioned without specific date"
+                elif mentioned_years and not fact_years:
+                    # Has years in text but fact doesn't specify years (shouldn't happen with current data)
+                    check_result['status'] = 'mentioned'
+                    check_result['detail'] = "Year(s) mentioned in text"
+                else:
+                    # No years mentioned in text
+                    check_result['status'] = 'mentioned'
+                    check_result['detail'] = "Topic mentioned without specific date"
             
             elif claim_type == 'measurement':
                 # Check if numbers are close to expected values
@@ -133,12 +180,25 @@ class FactChecker:
                 if 'meters_per_second' in fact['value']:
                     expected_value = fact['value']['meters_per_second'] / 1000000  # Convert to comparable
                     tolerance = expected_value * 0.05  # 5% tolerance
+                elif 'kilometers_per_second' in fact['value']:
+                    # Use kilometers per second directly (e.g. speed of light ~300,000 km/s)
+                    expected_value = fact['value']['kilometers_per_second']
+                    tolerance = expected_value * 0.05  # 5% tolerance
                 elif 'celsius' in fact['value']:
                     expected_value = fact['value']['celsius']
                     tolerance = 2.0  # 2 degree tolerance
                 elif 'meters_per_second_squared' in fact['value']:
                     expected_value = fact['value']['meters_per_second_squared']
                     tolerance = 0.2
+                elif 'meters' in fact['value']:
+                    # Heights like Mount Everest (8,849 m)
+                    expected_value = fact['value']['meters']
+                    # Allow small relative error, but at least 1 meter
+                    tolerance = max(1.0, expected_value * 0.02)
+                elif 'feet' in fact['value']:
+                    # Fallback if only feet are provided
+                    expected_value = fact['value']['feet']
+                    tolerance = max(3.0, expected_value * 0.02)
                 
                 if expected_value and mentioned_numbers:
                     close_numbers = [n for n in mentioned_numbers if abs(n - expected_value) <= tolerance]

@@ -1,6 +1,7 @@
 {
-  "knowledge_base_version": "1.0.0",
+  "knowledge_base_version": "2.0.0",
   "reference_date": "2024-11",
+  "total_facts": 19,
   "description": "Stage 2: Fact Verification Knowledge Base",
   "interpretation_philosophy": "We present facts from reliable sources (primarily Wikipedia) with transparent source attribution. For controversial topics, we acknowledge the controversy and present the mainstream scientific/historical consensus while noting that interpretations may vary.",
   "sources": {
@@ -205,6 +206,222 @@
       "controversy_level": "low",
       "interpretation_note": "Official IAU classification. Some still consider Pluto a planet colloquially.",
       "keywords": ["planets", "planety", "solar system", "układ słoneczny", "8 planets", "pluto"]
+    },
+    {
+      "id": "geo_continents_count",
+      "category": "geography",
+      "topic": "continents",
+      "claim_type": "count",
+      "statement": "There are 7 continents (most common model)",
+      "value": {
+        "count": 7,
+        "continents": ["Africa", "Antarctica", "Asia", "Europe", "North America", "South America", "Australia/Oceania"],
+        "note": "Some models use 6 continents (combining Europe and Asia into Eurasia, or Americas)"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Continent",
+        "retrieved": "2024-11",
+        "summary": "Seven-continent model is most commonly taught in English-speaking countries"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Different models exist (5, 6, or 7 continents), but 7-continent model is most common.",
+      "keywords": ["continents", "kontynenty", "7 continents", "seven continents", "africa", "asia", "europe"]
+    },
+    {
+      "id": "geo_poland_capital",
+      "category": "geography",
+      "topic": "poland",
+      "claim_type": "definition",
+      "statement": "Warsaw is the capital of Poland",
+      "value": {
+        "capital": "Warsaw",
+        "country": "Poland",
+        "population_approx": 1800000
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Warsaw",
+        "retrieved": "2024-11",
+        "summary": "Warsaw is the capital and largest city of Poland"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Undisputed fact.",
+      "keywords": ["warsaw", "warszawa", "capital", "stolica", "poland", "polska"]
+    },
+    {
+      "id": "geo_mount_everest",
+      "category": "geography",
+      "topic": "mountains",
+      "claim_type": "measurement",
+      "statement": "Mount Everest is the highest mountain on Earth at 8,849 meters",
+      "value": {
+        "meters": 8849,
+        "feet": 29032,
+        "location": "Nepal-China border"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Mount_Everest",
+        "retrieved": "2024-11",
+        "summary": "Mount Everest is Earth's highest mountain above sea level (8,849 m)"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Height was remeasured in 2020 and agreed upon by Nepal and China.",
+      "keywords": ["mount everest", "everest", "highest mountain", "najwyższa góra", "8849", "8848"]
+    },
+    {
+      "id": "geo_oceans_count",
+      "category": "geography",
+      "topic": "oceans",
+      "claim_type": "count",
+      "statement": "There are 5 oceans on Earth",
+      "value": {
+        "count": 5,
+        "oceans": ["Pacific", "Atlantic", "Indian", "Arctic", "Southern"],
+        "note": "Southern Ocean was officially recognized in 2000"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Ocean",
+        "retrieved": "2024-11",
+        "summary": "Five ocean divisions: Pacific, Atlantic, Indian, Arctic, and Southern"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Traditionally 4 oceans, but Southern Ocean officially recognized since 2000.",
+      "keywords": ["oceans", "oceany", "5 oceans", "pacific", "atlantic", "indian"]
+    },
+    {
+      "id": "tech_internet_origins",
+      "category": "technology",
+      "topic": "internet_history",
+      "claim_type": "date",
+      "statement": "The modern Internet began with ARPANET in 1969, World Wide Web in 1991",
+      "value": {
+        "arpanet_year": 1969,
+        "www_year": 1991,
+        "arpanet_note": "First ARPANET connection October 29, 1969",
+        "www_note": "Tim Berners-Lee released WWW to public in 1991"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/ARPANET",
+        "retrieved": "2024-11",
+        "summary": "ARPANET was the first packet-switching network (1969); WWW made internet accessible (1991)"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Internet history is complex, but these are key milestone dates.",
+      "keywords": ["internet", "arpanet", "world wide web", "www", "1969", "1991", "tim berners"]
+    },
+    {
+      "id": "tech_5g_covid_myth",
+      "category": "technology",
+      "topic": "5g_myths",
+      "claim_type": "definition",
+      "statement": "5G technology does NOT cause COVID-19 or spread viruses",
+      "value": {
+        "myth": "5G causes COVID-19",
+        "reality": "Viruses cannot travel on radio waves. 5G uses non-ionizing radiation.",
+        "scientific_consensus": "No causal link between 5G and COVID-19"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/5G_misinformation",
+        "retrieved": "2024-11",
+        "summary": "Scientific consensus: 5G does not cause or spread COVID-19. Viruses cannot travel on radio waves."
+      },
+      "controversy_level": "low",
+      "interpretation_note": "This is a debunked conspiracy theory. Scientific evidence is clear.",
+      "keywords": ["5g", "covid", "coronavirus", "radio waves", "conspiracy", "5g causes covid"]
+    },
+    {
+      "id": "tech_first_computer",
+      "category": "technology",
+      "topic": "computer_history",
+      "claim_type": "date",
+      "statement": "ENIAC, one of the first general-purpose electronic computers, was completed in 1945",
+      "value": {
+        "year": 1945,
+        "name": "ENIAC",
+        "full_name": "Electronic Numerical Integrator and Computer",
+        "note": "First programmable, electronic, general-purpose digital computer"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/ENIAC",
+        "retrieved": "2024-11",
+        "summary": "ENIAC was completed in 1945 and was among the first general-purpose electronic computers"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Computer history has many milestones; ENIAC is one of the most significant early computers.",
+      "keywords": ["eniac", "first computer", "1945", "computer history", "elektroniczny komputer"]
+    },
+    {
+      "id": "pol_eu_founding",
+      "category": "politics",
+      "topic": "european_union",
+      "claim_type": "date",
+      "statement": "The European Union was formally established by the Maastricht Treaty in 1993",
+      "value": {
+        "year": 1993,
+        "treaty": "Maastricht Treaty",
+        "treaty_signed": 1992,
+        "came_into_force": "1993-11-01",
+        "note": "EU evolved from earlier European Communities (EEC, 1957)"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/European_Union",
+        "retrieved": "2024-11",
+        "summary": "EU was established by the Maastricht Treaty which came into force on 1 November 1993"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "EU has complex history with precursor organizations, but 1993 is the official founding date.",
+      "keywords": ["european union", "eu", "unia europejska", "maastricht", "1993", "1992"]
+    },
+    {
+      "id": "pol_un_founding",
+      "category": "politics",
+      "topic": "united_nations",
+      "claim_type": "date",
+      "statement": "The United Nations was founded in 1945 after World War II",
+      "value": {
+        "year": 1945,
+        "date": "1945-10-24",
+        "founding_members": 51,
+        "current_members_approx": 193
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/United_Nations",
+        "retrieved": "2024-11",
+        "summary": "UN was established on October 24, 1945, after WWII with 51 founding members"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Widely documented historical fact.",
+      "keywords": ["united nations", "onz", "1945", "organization", "un founded"]
+    },
+    {
+      "id": "pol_us_independence",
+      "category": "politics",
+      "topic": "us_history",
+      "claim_type": "date",
+      "statement": "United States declared independence on July 4, 1776",
+      "value": {
+        "year": 1776,
+        "date": "1776-07-04",
+        "document": "Declaration of Independence",
+        "independence_from": "Great Britain"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/United_States_Declaration_of_Independence",
+        "retrieved": "2024-11",
+        "summary": "Declaration of Independence was adopted on July 4, 1776"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Well-documented historical event.",
+      "keywords": ["independence day", "july 4", "1776", "united states", "declaration of independence", "july 4th"]
     }
   ]
 }
