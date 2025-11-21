@@ -1,7 +1,7 @@
 {
   "knowledge_base_version": "2.0.0",
   "reference_date": "2024-11",
-  "total_facts": 19,
+  "total_facts": 24,
   "description": "Stage 2: Fact Verification Knowledge Base",
   "interpretation_philosophy": "We present facts from reliable sources (primarily Wikipedia) with transparent source attribution. For controversial topics, we acknowledge the controversy and present the mainstream scientific/historical consensus while noting that interpretations may vary.",
   "sources": {
@@ -422,6 +422,108 @@
       "controversy_level": "low",
       "interpretation_note": "Well-documented historical event.",
       "keywords": ["independence day", "july 4", "1776", "united states", "declaration of independence", "july 4th"]
+    },
+    {
+      "id": "pl_pl_independence_1918",
+      "category": "history",
+      "topic": "poland_independence",
+      "claim_type": "date",
+      "statement": "Poland regained independence on November 11, 1918 after 123 years of partitions",
+      "value": {
+        "year": 1918,
+        "date": "1918-11-11",
+        "partitions_duration_years": 123
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Independence_Day_(Poland)",
+        "retrieved": "2024-11",
+        "summary": "Poland's Independence Day is celebrated on 11 November, marking the restoration of a sovereign Polish state in 1918"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Independence was a process throughout 1918; 11 November is the commonly recognized symbolic date.",
+      "keywords": ["poland independence", "polish independence", "niepodległość polski", "11 listopada", "1918", "odzyskanie niepodległości"]
+    },
+    {
+      "id": "pl_pl_nato_accession_1999",
+      "category": "politics",
+      "topic": "poland_nato",
+      "claim_type": "date",
+      "statement": "Poland joined NATO on March 12, 1999",
+      "value": {
+        "year": 1999,
+        "date": "1999-03-12"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Enlargement_of_NATO",
+        "retrieved": "2024-11",
+        "summary": "Poland, Hungary and the Czech Republic joined NATO on 12 March 1999"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Widely accepted accession date for Poland's entry into NATO.",
+      "keywords": ["poland", "polska", "nato", "sojusz północnoatlantycki", "1999", "12 march", "12 marca"]
+    },
+    {
+      "id": "pl_pl_eu_accession_2004",
+      "category": "politics",
+      "topic": "poland_eu_accession",
+      "claim_type": "date",
+      "statement": "Poland joined the European Union on May 1, 2004",
+      "value": {
+        "year": 2004,
+        "date": "2004-05-01"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/2004_enlargement_of_the_European_Union",
+        "retrieved": "2024-11",
+        "summary": "On 1 May 2004, Poland and 9 other countries acceded to the European Union"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Poland formally acceded to the EU on 1 May 2004.",
+      "keywords": ["poland", "polska", "european union", "eu", "unia europejska", "2004", "1 may", "1 maja"]
+    },
+    {
+      "id": "pl_solidarity_1980",
+      "category": "history",
+      "topic": "solidarity_movement",
+      "claim_type": "date",
+      "statement": "The Solidarity (Solidarność) trade union movement emerged in Poland in 1980 at the Gdańsk Shipyard",
+      "value": {
+        "year": 1980,
+        "location": "Gdansk Shipyard"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Solidarity_(Polish_trade_union)",
+        "retrieved": "2024-11",
+        "summary": "Solidarity was founded in September 1980 at the Lenin Shipyard in Gdańsk, Poland"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Key movement in Poland's opposition to communist rule; 1980 is the commonly cited founding year.",
+      "keywords": ["solidarity", "solidarność", "gdańsk", "gdnask shipyard", "shipyard", "1980", "trade union", "związek zawodowy"]
+    },
+    {
+      "id": "pl_round_table_1989",
+      "category": "history",
+      "topic": "polish_transition_1989",
+      "claim_type": "date",
+      "statement": "The Polish Round Table Talks in 1989 led to semi-free elections and the beginning of the end of communist rule in Poland",
+      "value": {
+        "year": 1989,
+        "talks_start": "1989-02-06",
+        "election_date": "1989-06-04"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Polish_Round_Table_Agreement",
+        "retrieved": "2024-11",
+        "summary": "The Polish Round Table Agreement of 1989 led to semi-free elections on 4 June 1989 and a peaceful transition away from communist rule"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "The Round Table Talks and 4 June 1989 elections are widely seen as the start of the end of communist rule in Poland.",
+      "keywords": ["polish round table", "okrągły stół", "round table talks", "1989", "semi-free elections", "komunizm w polsce"]
     }
   ]
 }
