@@ -1,7 +1,7 @@
 {
   "knowledge_base_version": "2.0.0",
   "reference_date": "2024-11",
-  "total_facts": 24,
+  "total_facts": 31,
   "description": "Stage 2: Fact Verification Knowledge Base",
   "interpretation_philosophy": "We present facts from reliable sources (primarily Wikipedia) with transparent source attribution. For controversial topics, we acknowledge the controversy and present the mainstream scientific/historical consensus while noting that interpretations may vary.",
   "sources": {
@@ -524,6 +524,155 @@
       "controversy_level": "low",
       "interpretation_note": "The Round Table Talks and 4 June 1989 elections are widely seen as the start of the end of communist rule in Poland.",
       "keywords": ["polish round table", "okrągły stół", "round table talks", "1989", "semi-free elections", "komunizm w polsce"]
+    },
+    {
+      "id": "ww2_start_invasion_poland_1939",
+      "category": "history",
+      "topic": "ww2_start_german_invasion_poland",
+      "claim_type": "date",
+      "statement": "World War II in Europe began on 1 September 1939 with Nazi Germany's invasion of Poland",
+      "value": {
+        "year": 1939,
+        "date": "1939-09-01",
+        "aggressor": "Nazi Germany",
+        "victim": "Poland"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Invasion_of_Poland",
+        "retrieved": "2024-11",
+        "summary": "Germany invaded Poland on 1 September 1939, marking the beginning of World War II in Europe"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "Widely accepted as the formal start of World War II in Europe.",
+      "keywords": ["invasion of poland", "german invasion of poland", "niemcy napadły na polskę", "1 września 1939", "1 september 1939"]
+    },
+    {
+      "id": "ww2_auschwitz_german_camp",
+      "category": "history",
+      "topic": "auschwitz_camp",
+      "claim_type": "definition",
+      "statement": "Auschwitz-Birkenau was a German Nazi concentration and extermination camp in occupied Poland during World War II",
+      "value": {
+        "operator_state": "Nazi Germany",
+        "location_town": "Oswiecim",
+        "location_country_occupied": "occupied Poland",
+        "camp_type": ["concentration camp", "extermination camp"]
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Auschwitz_concentration_camp",
+        "retrieved": "2024-11",
+        "summary": "Auschwitz was a complex of concentration and extermination camps operated by Nazi Germany in occupied Poland during World War II"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "The camp was established and run by Nazi Germany on occupied Polish territory; the Polish state did not control this area during occupation.",
+      "keywords": ["auschwitz", "auschwitz-birkenau", "oswiecim", "german nazi concentration camp", "german nazi extermination camp", "obóz koncentracyjny w oświęcimiu"]
+    },
+    {
+      "id": "ww2_polish_death_camps_myth_en",
+      "category": "history",
+      "topic": "polish_death_camps_myth",
+      "claim_type": "definition",
+      "statement": "The phrase 'Polish death camps' is historically false; the camps were German Nazi camps located in occupied Poland",
+      "value": {
+        "myth": "polish death camps",
+        "reality": "The Nazi German state built and operated the death camps in occupied Poland; they were German Nazi camps, not Polish camps.",
+        "responsible_state": "Nazi Germany"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Terminology_of_Nazi_concentration_camps",
+        "retrieved": "2024-11",
+        "summary": "International usage increasingly avoids phrases like 'Polish death camps' as they are historically misleading; the camps were German Nazi camps in occupied Poland"
+      },
+      "controversy_level": "moderate",
+      "interpretation_note": "The phrase 'Polish death camps' inaccurately suggests Polish responsibility; historians and institutions emphasize that the camps were established and run by Nazi Germany on occupied Polish territory.",
+      "keywords": ["polish death camps", "polish concentration camps", "polish extermination camps"]
+    },
+    {
+      "id": "ww2_polish_death_camps_myth_pl",
+      "category": "history",
+      "topic": "polish_death_camps_myth",
+      "claim_type": "definition",
+      "statement": "Określenie 'polskie obozy śmierci' jest historycznie fałszywe; były to niemieckie nazistowskie obozy na okupowanym terytorium Polski",
+      "value": {
+        "myth": "polskie obozy śmierci",
+        "reality": "Obozy zagłady zostały zbudowane i prowadzone przez nazistowskie Niemcy na okupowanym terytorium Polski; nie były to obozy polskie.",
+        "responsible_state": "Nazi Germany"
+      },
+      "source": {
+        "type": "wikipedia_pl",
+        "url": "https://pl.wikipedia.org/wiki/Okre%C5%9Blenie_%E2%80%9Epolskie_obozy_koncentracyjne%E2%80%9D",
+        "retrieved": "2024-11",
+        "summary": "Określenie 'polskie obozy koncentracyjne' jest uznawane za nieprawdziwe i wprowadzające w błąd; obozy były niemieckimi nazistowskimi obozami na okupowanym terytorium Polski"
+      },
+      "controversy_level": "moderate",
+      "interpretation_note": "Instytucje naukowe i państwowe podkreślają, że odpowiedzialność za obozy ponoszą nazistowskie Niemcy, a nie państwo polskie czy naród polski.",
+      "keywords": ["polskie obozy śmierci", "polskie obozy koncentracyjne", "polskie obozy zagłady"]
+    },
+    {
+      "id": "ww2_german_crimes_against_poles",
+      "category": "history",
+      "topic": "german_crimes_against_poles",
+      "claim_type": "definition",
+      "statement": "During World War II, Nazi Germany committed mass crimes and atrocities against the Polish population, including mass executions, deportations, and operation of concentration and extermination camps on occupied Polish territory",
+      "value": {
+        "perpetrator_state": "Nazi Germany",
+        "victim_group": "Polish population (including Polish Jews and non-Jewish Poles)",
+        "crimes": ["mass executions", "deportations", "forced labour", "operation of concentration camps", "operation of extermination camps"]
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Nazi_crimes_against_the_Polish_nation",
+        "retrieved": "2024-11",
+        "summary": "Nazi Germany committed mass crimes against the Polish nation, including mass executions, deportations, forced labour and operation of camps on occupied Polish territory"
+      },
+      "controversy_level": "low",
+      "interpretation_note": "The central responsibility for these crimes lies with the Nazi German state and its institutions (e.g. SS, Gestapo, Wehrmacht command).",
+      "keywords": ["german crimes against poles", "zbrodnie niemieckie przeciwko polakom", "nazi crimes against the polish nation", "okupacja niemiecka w polsce"]
+    },
+    {
+      "id": "ww2_poles_responsible_auschwitz_myth_en",
+      "category": "history",
+      "topic": "poles_auschwitz_responsibility_myth",
+      "claim_type": "definition",
+      "statement": "Claims that Poles were responsible for Auschwitz are historically false; Auschwitz was a German Nazi camp run by Nazi Germany in occupied Poland",
+      "value": {
+        "myth": "poles were responsible for auschwitz",
+        "reality": "Auschwitz was designed, built and operated by Nazi Germany on occupied Polish territory; responsibility lies with the Nazi German state, not with the Polish state or the Polish nation.",
+        "responsible_state": "Nazi Germany"
+      },
+      "source": {
+        "type": "wikipedia_en",
+        "url": "https://en.wikipedia.org/wiki/Auschwitz_concentration_camp",
+        "retrieved": "2024-11",
+        "summary": "Auschwitz was a German Nazi concentration and extermination camp operated by Nazi Germany in occupied Poland"
+      },
+      "controversy_level": "moderate",
+      "interpretation_note": "Historically, Auschwitz was a German Nazi camp; statements shifting responsibility from Nazi Germany to 'the Poles' are considered misleading or false.",
+      "keywords": ["poles responsible for auschwitz", "poles were responsible for auschwitz", "poles are responsible for auschwitz", "poles ran auschwitz", "poles created auschwitz", "poles built auschwitz", "poles operated auschwitz", "polish responsibility for auschwitz"]
+    },
+    {
+      "id": "ww2_poles_responsible_auschwitz_myth_pl",
+      "category": "history",
+      "topic": "poles_auschwitz_responsibility_myth",
+      "claim_type": "definition",
+      "statement": "Stwierdzenia, że Polacy byli odpowiedzialni za Auschwitz, są historycznie fałszywe; Auschwitz był niemieckim nazistowskim obozem prowadzonym przez Niemcy na okupowanym terytorium Polski",
+      "value": {
+        "myth": "polacy byli odpowiedzialni za auschwitz",
+        "reality": "Auschwitz został zaprojektowany, zbudowany i prowadzony przez nazistowskie Niemcy na okupowanym terytorium Polski; odpowiedzialność spoczywa na państwie niemieckim, a nie na państwie polskim czy narodzie polskim.",
+        "responsible_state": "Nazi Germany"
+      },
+      "source": {
+        "type": "wikipedia_pl",
+        "url": "https://pl.wikipedia.org/wiki/Auschwitz-Birkenau",
+        "retrieved": "2024-11",
+        "summary": "Auschwitz-Birkenau był niemieckim nazistowskim obozem koncentracyjnym i zagłady na okupowanym terytorium Polski"
+      },
+      "controversy_level": "moderate",
+      "interpretation_note": "Odpowiedzialność za funkcjonowanie Auschwitz ponoszą nazistowskie Niemcy; obóz nie był polski ani kontrolowany przez polskie władze.",
+      "keywords": ["polacy byli odpowiedzialni za auschwitz", "polacy są odpowiedzialni za auschwitz", "polacy odpowiadali za auschwitz", "polacy odpowiadają za auschwitz", "polacy stworzyli auschwitz", "polacy zbudowali auschwitz", "polacy prowadzili auschwitz", "polska odpowiedzialność za auschwitz", "polacy za auschwitz"]
     }
   ]
 }

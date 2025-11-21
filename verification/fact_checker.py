@@ -226,12 +226,30 @@ class FactChecker:
                             score -= 2.0
             
             elif claim_type == 'definition':
-                # For definitions, just note that topic was mentioned
-                # More sophisticated NLP would be needed for full verification
-                check_result['status'] = 'mentioned'
-                check_result['detail'] = f"Topic mentioned. This is a {fact['controversy_level']} controversy topic."
-                if fact['controversy_level'] == 'high':
-                    check_result['detail'] += " See interpretation note."
+                # Definitions can optionally model "myth vs reality" style facts
+                myth = fact.get('value', {}).get('myth')
+                reality = fact.get('value', {}).get('reality')
+
+                if myth:
+                    myth_lower = myth.lower()
+                    if myth_lower in text_lower:
+                        # The debunked myth is explicitly present in the text
+                        check_result['status'] = 'contradicted'
+                        detail = f"Debunked myth detected: '{myth}'."
+                        if reality:
+                            detail += f" Reality: {reality}"
+                        check_result['detail'] = detail
+                        score -= 3.0
+                    else:
+                        # Topic relevant, but myth phrase not explicitly used
+                        check_result['status'] = 'mentioned'
+                        check_result['detail'] = "Topic mentioned. This fact models a myth vs reality pair."
+                else:
+                    # Generic definition fact – we only note that the topic is relevant
+                    check_result['status'] = 'mentioned'
+                    check_result['detail'] = f"Topic mentioned. This is a {fact['controversy_level']} controversy topic."
+                    if fact['controversy_level'] == 'high':
+                        check_result['detail'] += " See interpretation note."
             
             checks.append(check_result)
         
