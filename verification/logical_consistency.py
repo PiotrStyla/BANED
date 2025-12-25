@@ -175,12 +175,16 @@ class EmotionalLanguageDetector:
                 'shocking', 'outrageous', 'devastating', 'horrifying', 'terrifying',
                 'unbelievable', 'incredible', 'amazing', 'stunning', 'explosive',
                 'bombshell', 'urgent', 'breaking', 'exclusive', 'revealed',
-                'exposed', 'secrets', 'hidden truth', 'conspiracy', 'cover-up'
+                'exposed', 'secrets', 'hidden truth', 'conspiracy', 'cover-up',
+                'mind-blowing', 'jaw-dropping', 'earth-shattering', 'groundbreaking'
             ],
             'pl': [
                 'szokujące', 'oburzające', 'druzgocące', 'przerażające', 'niewiarygodne',
                 'niesamowite', 'zdumiewające', 'pilne', 'najnowsze', 'ekskluzywne',
-                'ujawnione', 'sekrety', 'ukryta prawda', 'spisek', 'ukrywane'
+                'ujawnione', 'sekrety', 'ukryta prawda', 'spisek', 'ukrywane',
+                'niewiarygodne', 'porażające', 'sensacyjne', 'rewolucyjne', 'przełomowe',
+                'skandaliczne', 'kontrowersyjne', 'bulwersujące', 'szaleństwo',
+                'absolutnie', 'niewyobrażalne', 'niezwykłe', 'dramatyczne'
             ]
         }
         
@@ -296,14 +300,27 @@ class FactDatabase:
             'miracle cure',
             'secret that they don\'t want you to know',
             'big pharma doesn\'t want you to see this',
+            'lose weight without exercise',
+            'get rich quick',
+            'make money from home',
+            'instant results',
             
-            # Polish
+            # Polish - expanded
             'leczy wszystkie choroby',
             'działa w 100% przypadków',
             'lekarze tego nienawidzą',
             'cudowne lekarstwo',
             'tajemnica której nie chcą byś poznał',
             'koncerny farmaceutyczne ukrywają',
+            'schudnij bez wysiłku',
+            'szybkie bogactwo',
+            'zarabiaj z domu',
+            'natychmiastowe rezultaty',
+            'gwarantowany sukces',
+            'nigdy nie zawodzi',
+            'pewny sposób na',
+            'sprawdzona metoda',
+            'tajne źródła potwierdzają',
         ]
         
         # Scientific impossibilities
@@ -341,8 +358,10 @@ class FactDatabase:
             'censored by',
             'banned by',
             'they deleted this',
+            'share before removed',
+            'they don\'t want this to go viral',
             
-            # Polish
+            # Polish - significantly expanded
             'czego ci nie mówią',
             'czego nie chcą żebyś wiedział',
             'media głównego nurtu ukrywają',
@@ -358,6 +377,17 @@ class FactDatabase:
             'wielkie koncerny nie chcą',
             'cenzurowane przez',
             'usunięte przez',
+            'zanim usuną',
+            'udostępnij zanim zniknie',
+            'nie chcą żebyś to zobaczył',
+            'ukrywana prawda',
+            'rząd ukrywa',
+            'unia europejska ukrywa',
+            'bruksela ukrywa',
+            'kłamią nam w żywe oczy',
+            'manipulacja medialna',
+            'propaganda',
+            'to ci ukrywają',
         ]
     
     def check_impossible_claims(self, text: str) -> Tuple[float, List[str]]:

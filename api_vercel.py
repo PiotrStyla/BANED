@@ -28,14 +28,15 @@ class handler(BaseHTTPRequestHandler):
             
             response = {
                 "name": "BANED Double Power API",
-                "version": "4.0.0-vercel",
+                "version": "4.1.0-vercel",
                 "status": "online",
                 "mode": "heuristic-analysis",
                 "features": [
                     "Heuristic Pattern Detection",
                     "Logical Consistency Checking",
                     "Fake News Pattern Recognition",
-                    "Bilingual (PL/EN)"
+                    "Bilingual (PL/EN)",
+                    "Enhanced Polish Detection"
                 ],
                 "note": "Stage 1: Heuristic analysis (patterns, logic, language) - NOT fact verification"
             }
@@ -56,6 +57,49 @@ class handler(BaseHTTPRequestHandler):
             }
             
             self.wfile.write(json.dumps(response).encode())
+        
+        elif self.path == '/examples' or self.path == '/api/examples':
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            
+            response = {
+                "polish": {
+                    "real": [
+                        "Ministerstwo Zdrowia ogłosiło nowy program profilaktyki zdrowotnej dla dzieci.",
+                        "Uniwersytet Warszawski opublikował wyniki badań nad zmianami klimatu.",
+                        "Rada Ministrów przyjęła ustawę o ochronie środowiska.",
+                        "Narodowy Bank Polski przedstawił raport o inflacji.",
+                        "Minister edukacji zapowiedział reformę systemu egzaminów."
+                    ],
+                    "fake": [
+                        "Bill Gates ukrywa mikroczapy w szczepionkach! Naukowcy potwierdzają!",
+                        "Rząd ukrywa prawdę o chemtrails! Tajna operacja nad Polską!",
+                        "Nie do wiary! Ten jeden sposób leczy wszystkie choroby!",
+                        "Bruksela ukrywa szokującą prawdę! Udostępnij zanim usuną!",
+                        "Lekarze tego nienawidzą! Schudnij bez wysiłku w 3 dni!"
+                    ]
+                },
+                "english": {
+                    "real": [
+                        "The Department of Health announced new healthcare guidelines today.",
+                        "Scientists at MIT published groundbreaking research on renewable energy.",
+                        "The Senate passed legislation to improve infrastructure funding.",
+                        "University researchers discovered new species in the Amazon.",
+                        "Federal Reserve announced interest rate decision."
+                    ],
+                    "fake": [
+                        "Doctors hate this one weird trick that cures everything!",
+                        "BREAKING: Government admits aliens are real! Click to learn more!",
+                        "Miracle cure discovered! Big Pharma doesn't want you to know!",
+                        "Share before they delete this! The truth they hide!",
+                        "Lose weight without exercise! 200% guaranteed results!"
+                    ]
+                }
+            }
+            
+            self.wfile.write(json.dumps(response, ensure_ascii=False).encode('utf-8'))
             
         else:
             self.send_response(404)
