@@ -12,6 +12,14 @@
   ],
   "routes": [
     {
+      "src": "/favicon.svg",
+      "dest": "/public/favicon.svg"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/public/favicon.ico"
+    },
+    {
       "src": "/",
       "dest": "/public/index.html"
     },
