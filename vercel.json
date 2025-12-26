@@ -20,6 +20,18 @@
       "dest": "/public/favicon.ico"
     },
     {
+      "src": "/privacy-policy.html",
+      "dest": "/public/privacy-policy.html"
+    },
+    {
+      "src": "/cookie-policy.html",
+      "dest": "/public/cookie-policy.html"
+    },
+    {
+      "src": "/terms-of-service.html",
+      "dest": "/public/terms-of-service.html"
+    },
+    {
       "src": "/",
       "dest": "/public/index.html"
     },

@@ -722,11 +722,37 @@
             <!-- Copyright -->
             <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd;">
                 <p style="color: #666; font-size: 0.9em;">
-                    © 2025 BANED Double Power • Made with ❤️ for education and research
+                    &copy; 2025 BANED Double Power • Made with &hearts; for education and research
+                </p>
+                <p style="color: #888; font-size: 0.85em; margin-top: 10px;">
+                    <a href="/privacy-policy.html" style="color: #667eea; text-decoration: none; margin: 0 10px;">Privacy Policy</a> •
+                    <a href="/cookie-policy.html" style="color: #667eea; text-decoration: none; margin: 0 10px;">Cookie Policy</a> •
+                    <a href="/terms-of-service.html" style="color: #667eea; text-decoration: none; margin: 0 10px;">Terms of Service</a> •
+                    <a href="#" onclick="showCookieSettings(); return false;" style="color: #667eea; text-decoration: none; margin: 0 10px;">Cookie Settings</a>
                 </p>
             </div>
         </footer>
     </div>
 
-</body>
-</html>
+    <!-- Cookie Consent Banner -->
+    <div id="cookieBanner" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background: rgba(102, 126, 234, 0.98); color: white; padding: 20px; box-shadow: 0 -2px 10px rgba(0,0,0,0.3); z-index: 9999;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+            <div style="flex: 1; min-width: 300px;">
+                <p style="margin: 0 0 10px 0; font-size: 1.1em; font-weight: 600;">&nbsp; We use cookies</p>
+                <p style="margin: 0; font-size: 0.95em; opacity: 0.95;">
+                    We use essential cookies for the site to work, and optional analytics cookies to improve our service. 
+                    <a href="/cookie-policy.html" style="color: white; text-decoration: underline;">Learn more</a>
+                </p>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button onclick="acceptCookies()" style="background: white; color: #667eea; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 1em;">
+                    Accept All
+                </button>
+                <button onclick="acceptEssentialOnly()" style="background: transparent; color: white; border: 2px solid white; padding: 12px 24px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 1em;">
+                    Essential Only
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
